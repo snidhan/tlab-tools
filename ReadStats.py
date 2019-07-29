@@ -219,7 +219,7 @@ class Pdfs:
             fin.close()
         pdf = np.reshape(pdf,(len(data_path_pdf_list),self.ny + 1,self.nb + 2))
         self.pdf = pdf
-        self.pdf_timeavg = np.mean(self.pdf,axis=0)  #assumes that data is on a homogeneous grid! Local grid not yet accounted for...
+        self.pdf_timeavg = np.mean(self.pdf,axis=0)  
 
         
         # normalizing histograms to obtain pdf (s.t. it integrates to 1 using midpoint rule)     
@@ -237,9 +237,12 @@ class Pdfs:
                 
         
         # axis information
-        self.xy = np.zeros((2,self.ny,self.nb),dtype=float)
+        self.xy = np.zeros((2,len(data_path_pdf_list),self.ny,self.nb),dtype=float)
+        self.xy_timeavg = np.zeros((2,self.ny,self.nb),dtype=float)
+        for n in range(len(data_path_pdf_list)):
+            for j in range(self.ny):
+                self.xy[0,n,j,:] = np.linspace(self.pdf[n,j,self.nb],self.pdf[n,j,self.nb + 1],num=self.nb)
+                self.xy[1,n,j,:] = self.y[j]
         for j in range(self.ny):
-            self.xy[0,j,:] = np.linspace(self.pdf[0,j,self.nb],self.pdf[0,j,self.nb + 1],num=self.nb)
-            self.xy[1,j,:] = self.y[j]
-
-        
+            self.xy_timeavg[0,j,:] = np.linspace(self.pdf_timeavg[j,self.nb],self.pdf_timeavg[j,self.nb + 1],num=self.nb)
+            self.xy_timeavg[1,j,:] = self.y[j]
