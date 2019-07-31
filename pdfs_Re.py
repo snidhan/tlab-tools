@@ -459,7 +459,7 @@ plt.colorbar(cs2,ax=ax2)
 plt.colorbar(cs3,ax=ax3)
 plt.colorbar(cs4,ax=ax4)
 plt.tight_layout()
-#plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_timeavg.pdf')
+plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_timeavg.pdf')
 plt.show()
 
 
