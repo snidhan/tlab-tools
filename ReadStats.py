@@ -211,20 +211,23 @@ class Pdfs:
       
         # processing data
         pdf = np.zeros((len(data_path_pdf_list),(self.ny + 1) * (self.nb + 2)),dtype=float)
+        pdf_interp = np.zeros((len(data_path_pdf_list),(self.ny + 1) * (self.nb + 2)),dtype=float)
         for n in range(len(data_path_pdf_list)):
             print("Processing file {} ...".format(data_path_pdf_list[n]))
             fin = open(data_path_pdf_list[n], 'rb')
             raw = fin.read()
             pdf[n,:] = np.array(struct.unpack((etype+'{}'+dtype).format(int(fin.tell()/sizeofdata)), raw))
+            pdf_interp[n,:] = np.array(struct.unpack((etype+'{}'+dtype).format(int(fin.tell()/sizeofdata)), raw))
             fin.close()
         pdf = np.reshape(pdf,(len(data_path_pdf_list),self.ny + 1,self.nb + 2))
+        pdf_interp = np.reshape(pdf_interp,(len(data_path_pdf_list),self.ny + 1,self.nb + 2))
+        self.pdf = pdf
 
-        # interpolating data onto same grid
+        # interpolating data onto same grid as first pdf in list
         for n in range(len(data_path_pdf_list)):
             for j in range(self.ny):
-                pdf[n,j,:-2] = np.interp(np.linspace(pdf[0,j,self.nb],pdf[0,j,self.nb + 1],num=self.nb),np.linspace(pdf[n,j,self.nb],pdf[n,j,self.nb + 1],num=self.nb),pdf[n,j,:-2])
-        self.pdf = pdf
-        self.pdf_timeavg = np.mean(self.pdf,axis=0)   
+                pdf_interp[n,j,:-2] = np.interp(np.linspace(self.pdf[0,j,self.nb],self.pdf[0,j,self.nb + 1],num=self.nb),np.linspace(self.pdf[n,j,self.nb],self.pdf[n,j,self.nb + 1],num=self.nb),self.pdf[n,j,:-2])
+        self.pdf_timeavg = np.mean(pdf_interp,axis=0)   
 
         
         # normalizing histograms to obtain pdf (s.t. it integrates to 1 using midpoint rule)     
@@ -242,9 +245,10 @@ class Pdfs:
                 
         
         # axis information
-        self.xy = np.zeros((2,self.ny,self.nb),dtype=float)
-        for j in range(self.ny):
-            self.xy[0,j,:] = np.linspace(self.pdf[0,j,self.nb],self.pdf[0,j,self.nb + 1],num=self.nb)
-            self.xy[1,j,:] = self.y[j]
+        self.xy = np.zeros((2,len(data_path_pdf_list),self.ny,self.nb),dtype=float)
+        for n in range(len(data_path_pdf_list)):
+            for j in range(self.ny):
+                self.xy[0,n,j,:] = np.linspace(self.pdf[n,j,self.nb],self.pdf[n,j,self.nb + 1],num=self.nb)
+                self.xy[1,n,j,:] = self.y[j]
 
         
