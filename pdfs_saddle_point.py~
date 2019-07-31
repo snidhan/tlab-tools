@@ -84,7 +84,7 @@ maxvort_1 = np.zeros((len(vortlist_1),NS42_vortpdf_1.ny))
 maxprob_vort_1 = np.zeros((len(vortlist_1),NS42_vortpdf_1.ny))
 for t in range(len(vortlist_1)):
     for i in range(0,NS42_vortpdf_1.ny):
-        maxvort_1[t,i] = NS42_vortpdf_1.xy[0,t,i,np.argmax(NS42_vortpdf_1.pdf[t,i,:NS42_vortpdf_1.nb])]
+        maxvort_1[t,i] = NS42_vortpdf_1.xy[0,i,np.argmax(NS42_vortpdf_1.pdf[t,i,:NS42_vortpdf_1.nb])]
         maxprob_vort_1[t,i] = np.max(NS42_vortpdf_1.pdf[t,i,:NS42_vortpdf_1.nb])
 maxvort_1 = np.log10(np.exp(maxvort_1)/(ceps*B0/nu))
 
@@ -92,7 +92,7 @@ maxvort_2 = np.zeros((len(vortlist_2),NS42_vortpdf_2.ny))
 maxprob_vort_2 = np.zeros((len(vortlist_2),NS42_vortpdf_2.ny))
 for t in range(len(vortlist_2)):
     for i in range(0,NS42_vortpdf_2.ny):
-        maxvort_2[t,i] = NS42_vortpdf_2.xy[0,t,i,np.argmax(NS42_vortpdf_2.pdf[t,i,:NS42_vortpdf_2.nb])]
+        maxvort_2[t,i] = NS42_vortpdf_2.xy[0,i,np.argmax(NS42_vortpdf_2.pdf[t,i,:NS42_vortpdf_2.nb])]
         maxprob_vort_2[t,i] = np.max(NS42_vortpdf_2.pdf[t,i,:NS42_vortpdf_2.nb])
 maxvort_2 = np.log10(np.exp(maxvort_2)/(ceps*B0/nu))
 
@@ -100,7 +100,7 @@ maxvort_3 = np.zeros((len(vortlist_3),NS42_vortpdf_3.ny))
 maxprob_vort_3 = np.zeros((len(vortlist_3),NS42_vortpdf_3.ny))
 for t in range(len(vortlist_3)):
     for i in range(0,NS42_vortpdf_3.ny):
-        maxvort_3[t,i] = NS42_vortpdf_3.xy[0,t,i,np.argmax(NS42_vortpdf_3.pdf[t,i,:NS42_vortpdf_3.nb])]
+        maxvort_3[t,i] = NS42_vortpdf_3.xy[0,i,np.argmax(NS42_vortpdf_3.pdf[t,i,:NS42_vortpdf_3.nb])]
         maxprob_vort_3[t,i] = np.max(NS42_vortpdf_3.pdf[t,i,:NS42_vortpdf_3.nb])
 maxvort_3 = np.log10(np.exp(maxvort_3)/(ceps*B0/nu))
 
@@ -108,7 +108,7 @@ maxvort_S20 = np.zeros((len(vortlist_S20),vortpdf_S20.ny))
 maxprob_vort_S20 = np.zeros((len(vortlist_S20),vortpdf_S20.ny))
 for t in range(len(vortlist_S20)):
     for i in range(0,vortpdf_S20.ny):
-        maxvort_S20[t,i] = vortpdf_S20.xy[0,t,i,np.argmax(vortpdf_S20.pdf[t,i,:vortpdf_S20.nb])]
+        maxvort_S20[t,i] = vortpdf_S20.xy[0,i,np.argmax(vortpdf_S20.pdf[t,i,:vortpdf_S20.nb])]
         maxprob_vort_S20[t,i] = np.max(vortpdf_S20.pdf[t,i,:vortpdf_S20.nb])
 maxvort_S20 = np.log10(np.exp(maxvort_S20)/(ceps*B0/nu))
          
@@ -116,7 +116,7 @@ maxpv_1 = np.zeros((len(pvlist_1),NS42_pvpdf_1.ny))
 maxprob_pv_1 = np.zeros((len(pvlist_1),NS42_pvpdf_1.ny))
 for t in range(len(pvlist_1)):
     for i in range(0,NS42_pvpdf_1.ny):
-        maxpv_1[t,i] = NS42_pvpdf_1.xy[0,t,i,np.argmax(NS42_pvpdf_1.pdf[t,i,:NS42_pvpdf_1.nb])]
+        maxpv_1[t,i] = NS42_pvpdf_1.xy[0,i,np.argmax(NS42_pvpdf_1.pdf[t,i,:NS42_pvpdf_1.nb])]
         maxprob_pv_1[t,i] = np.max(NS42_pvpdf_1.pdf[t,i,:NS42_pvpdf_1.nb])
     maxpv_1[t,:] = np.log10(np.exp(maxpv_1[t,:])/(cb*ceps*(NS42_1.z_enc[t]/L_0)**(-4./3.)*(B0/nu)**3/42))
     
@@ -124,7 +124,7 @@ maxpv_2 = np.zeros((len(pvlist_2),NS42_pvpdf_2.ny))
 maxprob_pv_2 = np.zeros((len(pvlist_2),NS42_pvpdf_2.ny))
 for t in range(len(pvlist_2)):
     for i in range(0,NS42_pvpdf_2.ny):
-        maxpv_2[t,i] = NS42_pvpdf_2.xy[0,t,i,np.argmax(NS42_pvpdf_2.pdf[t,i,:NS42_pvpdf_2.nb])]
+        maxpv_2[t,i] = NS42_pvpdf_2.xy[0,i,np.argmax(NS42_pvpdf_2.pdf[t,i,:NS42_pvpdf_2.nb])]
         maxprob_pv_2[t,i] = np.max(NS42_pvpdf_2.pdf[t,i,:NS42_pvpdf_2.nb])
     maxpv_2[t,:] = np.log10(np.exp(maxpv_2[t,:])/(cb*ceps*(NS42_2.z_enc[t]/L_0)**(-4./3.)*(B0/nu)**3/42))
     
@@ -132,7 +132,7 @@ maxpv_3 = np.zeros((len(pvlist_3),NS42_pvpdf_3.ny))
 maxprob_pv_3 = np.zeros((len(pvlist_3),NS42_pvpdf_3.ny))
 for t in range(len(pvlist_3)):
     for i in range(0,NS42_pvpdf_3.ny):
-        maxpv_3[t,i] = NS42_pvpdf_3.xy[0,t,i,np.argmax(NS42_pvpdf_3.pdf[t,i,:NS42_pvpdf_3.nb])]
+        maxpv_3[t,i] = NS42_pvpdf_3.xy[0,i,np.argmax(NS42_pvpdf_3.pdf[t,i,:NS42_pvpdf_3.nb])]
         maxprob_pv_3[t,i] = np.max(NS42_pvpdf_3.pdf[t,i,:NS42_pvpdf_3.nb])
     maxpv_3[t,:] = np.log10(np.exp(maxpv_3[t,:])/(cb*ceps*(NS42_3.z_enc[t]/L_0)**(-4./3.)*(B0/nu)**3/42))
 
@@ -140,7 +140,7 @@ maxpv_S20 = np.zeros((len(pvlist_S20),pvpdf_S20.ny))
 maxprob_pv_S20 = np.zeros((len(pvlist_S20),pvpdf_S20.ny))
 for t in range(len(pvlist_S20)):
     for i in range(0,pvpdf_S20.ny):
-        maxpv_S20[t,i] = pvpdf_S20.xy[0,t,i,np.argmax(pvpdf_S20.pdf[t,i,:pvpdf_S20.nb])]
+        maxpv_S20[t,i] = pvpdf_S20.xy[0,i,np.argmax(pvpdf_S20.pdf[t,i,:pvpdf_S20.nb])]
         maxprob_pv_S20[t,i] = np.max(pvpdf_S20.pdf[t,i,:pvpdf_S20.nb])
     maxpv_S20[t,:] = np.log10(np.exp(maxpv_S20[t,:])/(cb*ceps*(S20.z_enc[t]/L_0)**(-4./3.)*(B0/nu)**3/42))
 
