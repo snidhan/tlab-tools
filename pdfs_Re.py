@@ -32,7 +32,7 @@ N = np.sqrt(3)
 L0 = (B0/N**3)**0.5
 ceps = 0.1
 cb=0.1
-it=1
+it=0
 
 ##########################################################################
 # Stats
@@ -459,7 +459,7 @@ plt.colorbar(cs2,ax=ax2)
 plt.colorbar(cs3,ax=ax3)
 plt.colorbar(cs4,ax=ax4)
 plt.tight_layout()
-#plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_timeavg.pdf')
+plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_timeavg_interp.pdf')
 plt.show()
 
 
@@ -512,7 +512,7 @@ plt.colorbar(cs2,ax=ax2)
 plt.colorbar(cs3,ax=ax3)
 plt.colorbar(cs4,ax=ax4)
 plt.tight_layout()
-plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_21.pdf')
+plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_21_interp.pdf')
 plt.show()
 
 f, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,sharex='col',sharey='all',figsize=(10,10))
@@ -562,7 +562,7 @@ plt.colorbar(cs2,ax=ax2)
 plt.colorbar(cs3,ax=ax3)
 plt.colorbar(cs4,ax=ax4)
 plt.tight_layout()
-#plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_20.pdf')
+plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_20_interp.pdf')
 plt.show()
 
 f, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,sharex='col',sharey='all',figsize=(10,10))
@@ -612,7 +612,7 @@ plt.colorbar(cs2,ax=ax2)
 plt.colorbar(cs3,ax=ax3)
 plt.colorbar(cs4,ax=ax4)
 plt.tight_layout()
-plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_19.pdf')
+plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_19_interp.pdf')
 plt.show()
 
 #Presentations

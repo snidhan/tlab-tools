@@ -218,12 +218,12 @@ class Pdfs:
             pdf[n,:] = np.array(struct.unpack((etype+'{}'+dtype).format(int(fin.tell()/sizeofdata)), raw))
             fin.close()
         pdf = np.reshape(pdf,(len(data_path_pdf_list),self.ny + 1,self.nb + 2))
-        self.pdf = pdf
 
         # interpolating data onto same grid
         for n in range(len(data_path_pdf_list)):
             for j in range(self.ny):
-                self.pdf[n,j,:-2] = np.interp(np.linspace(self.pdf[0,j,self.nb],self.pdf[0,j,self.nb + 1],num=self.nb),np.linspace(self.pdf[n,j,self.nb],self.pdf[n,j,self.nb + 1],num=self.nb),self.pdf[n,j,:-2])
+                pdf[n,j,:-2] = np.interp(np.linspace(pdf[0,j,self.nb],pdf[0,j,self.nb + 1],num=self.nb),np.linspace(pdf[n,j,self.nb],pdf[n,j,self.nb + 1],num=self.nb),pdf[n,j,:-2])
+        self.pdf = pdf
         self.pdf_timeavg = np.mean(self.pdf,axis=0)   
 
         
