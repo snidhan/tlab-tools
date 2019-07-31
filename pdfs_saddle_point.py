@@ -254,7 +254,7 @@ ax2.set_xlabel(r'$z_\mathrm{enc}/L_0$')
 ax1.set_ylabel(r'$z_\mathrm{saddle}/z_\mathrm{enc}$')
 ax1.legend(loc='best',fontsize=20)
 plt.tight_layout()
-#plt.savefig(opath+'pdfs_saddle_height_time_S20_S0.pdf')
+plt.savefig(opath+'pdfs_saddle_height_time_S20_S0.pdf')
 plt.show()
 
 #Presentations
