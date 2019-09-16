@@ -53,7 +53,7 @@ S20 = Statistics(path_S20+'stats/pdftimes/avg42000-84000.nc')
 
 ############################################################################
 
-# Pdf
+# Pdf 
 
 vortlist_1 = [path_1+'stats/pdfs/pdf20500.LnEnstrophyW_iW_i',path_1+'stats/pdfs/pdf24000.LnEnstrophyW_iW_i',path_1+'stats/pdfs/pdf27500.LnEnstrophyW_iW_i',path_1+'stats/pdfs/pdf32000.LnEnstrophyW_iW_i',path_1+'stats/pdfs/pdf36500.LnEnstrophyW_iW_i',path_1+'stats/pdfs/pdf41500.LnEnstrophyW_iW_i',path_1+'stats/pdfs/pdf47500.LnEnstrophyW_iW_i',path_1+'stats/pdfs/pdf53000.LnEnstrophyW_iW_i']
 vortlist_2 = [path_2+'stats/pdfs/pdf60000.LnEnstrophyW_iW_i',path_2+'stats/pdfs/pdf67000.LnEnstrophyW_iW_i',path_2+'stats/pdfs/pdf74500.LnEnstrophyW_iW_i']
@@ -78,127 +78,133 @@ NS42_pvpdf_3 = Pdfs(pvlist_3,path_3+'y.dat')
 vortpdf_S20 = Pdfs(vortlist_S20,path_S20+'y.dat')
 pvpdf_S20 = Pdfs(pvlist_S20,path_S20+'y.dat')
 
+# Running average of pdfs
+
+NS42_vortpdf_timmean_1 = np.zeros((len(vortlist_1)-2,NS42_vortpdf_1.ny+1,NS42_vortpdf_1.nb+2))
+for t in range(len(vortlist_1)-2):
+    NS42_vortpdf_timmean_1[t,:,:] = np.mean(NS42_vortpdf_1.pdf_interp[t:t+3,:,:],axis=0)
+
 # Find where pdf has a maximum at each height
 
-maxvort_1 = np.zeros((len(vortlist_1),NS42_vortpdf_1.ny))
-maxprob_vort_1 = np.zeros((len(vortlist_1),NS42_vortpdf_1.ny))
-for t in range(len(vortlist_1)):
+maxvort_1 = np.zeros((len(vortlist_1)-2,NS42_vortpdf_1.ny))
+maxprob_vort_1 = np.zeros((len(vortlist_1)-2,NS42_vortpdf_1.ny))
+for t in range(len(vortlist_1)-2):
     for i in range(0,NS42_vortpdf_1.ny):
-        maxvort_1[t,i] = NS42_vortpdf_1.xy[0,t,i,np.argmax(NS42_vortpdf_1.pdf[t,i,:NS42_vortpdf_1.nb])]
-        maxprob_vort_1[t,i] = np.max(NS42_vortpdf_1.pdf[t,i,:NS42_vortpdf_1.nb])
+        maxvort_1[t,i] = NS42_vortpdf_1.xy[0,0,i,np.argmax(NS42_vortpdf_timmean_1[t,i,:NS42_vortpdf_1.nb])]
+        maxprob_vort_1[t,i] = np.max(NS42_vortpdf_timmean_1[t,i,:NS42_vortpdf_1.nb])
 maxvort_1 = np.log10(np.exp(maxvort_1)/(ceps*B0/nu))
 
 maxvort_2 = np.zeros((len(vortlist_2),NS42_vortpdf_2.ny))
 maxprob_vort_2 = np.zeros((len(vortlist_2),NS42_vortpdf_2.ny))
 for t in range(len(vortlist_2)):
     for i in range(0,NS42_vortpdf_2.ny):
-        maxvort_2[t,i] = NS42_vortpdf_2.xy[0,t,i,np.argmax(NS42_vortpdf_2.pdf[t,i,:NS42_vortpdf_2.nb])]
-        maxprob_vort_2[t,i] = np.max(NS42_vortpdf_2.pdf[t,i,:NS42_vortpdf_2.nb])
+        maxvort_2[t,i] = NS42_vortpdf_2.xy[0,0,i,np.argmax(NS42_vortpdf_2.pdf_interp[t,i,:NS42_vortpdf_2.nb])]
+        maxprob_vort_2[t,i] = np.max(NS42_vortpdf_2.pdf_interp[t,i,:NS42_vortpdf_2.nb])
 maxvort_2 = np.log10(np.exp(maxvort_2)/(ceps*B0/nu))
 
 maxvort_3 = np.zeros((len(vortlist_3),NS42_vortpdf_3.ny))
 maxprob_vort_3 = np.zeros((len(vortlist_3),NS42_vortpdf_3.ny))
 for t in range(len(vortlist_3)):
     for i in range(0,NS42_vortpdf_3.ny):
-        maxvort_3[t,i] = NS42_vortpdf_3.xy[0,t,i,np.argmax(NS42_vortpdf_3.pdf[t,i,:NS42_vortpdf_3.nb])]
-        maxprob_vort_3[t,i] = np.max(NS42_vortpdf_3.pdf[t,i,:NS42_vortpdf_3.nb])
+        maxvort_3[t,i] = NS42_vortpdf_3.xy[0,0,i,np.argmax(NS42_vortpdf_3.pdf_interp[t,i,:NS42_vortpdf_3.nb])]
+        maxprob_vort_3[t,i] = np.max(NS42_vortpdf_3.pdf_interp[t,i,:NS42_vortpdf_3.nb])
 maxvort_3 = np.log10(np.exp(maxvort_3)/(ceps*B0/nu))
 
 maxvort_S20 = np.zeros((len(vortlist_S20),vortpdf_S20.ny))
 maxprob_vort_S20 = np.zeros((len(vortlist_S20),vortpdf_S20.ny))
 for t in range(len(vortlist_S20)):
     for i in range(0,vortpdf_S20.ny):
-        maxvort_S20[t,i] = vortpdf_S20.xy[0,t,i,np.argmax(vortpdf_S20.pdf[t,i,:vortpdf_S20.nb])]
-        maxprob_vort_S20[t,i] = np.max(vortpdf_S20.pdf[t,i,:vortpdf_S20.nb])
+        maxvort_S20[t,i] = vortpdf_S20.xy[0,0,i,np.argmax(vortpdf_S20.pdf_interp[t,i,:vortpdf_S20.nb])]
+        maxprob_vort_S20[t,i] = np.max(vortpdf_S20.pdf_interp[t,i,:vortpdf_S20.nb])
 maxvort_S20 = np.log10(np.exp(maxvort_S20)/(ceps*B0/nu))
          
 maxpv_1 = np.zeros((len(pvlist_1),NS42_pvpdf_1.ny))
 maxprob_pv_1 = np.zeros((len(pvlist_1),NS42_pvpdf_1.ny))
 for t in range(len(pvlist_1)):
     for i in range(0,NS42_pvpdf_1.ny):
-        maxpv_1[t,i] = NS42_pvpdf_1.xy[0,t,i,np.argmax(NS42_pvpdf_1.pdf[t,i,:NS42_pvpdf_1.nb])]
-        maxprob_pv_1[t,i] = np.max(NS42_pvpdf_1.pdf[t,i,:NS42_pvpdf_1.nb])
+        maxpv_1[t,i] = NS42_pvpdf_1.xy[0,0,i,np.argmax(NS42_pvpdf_1.pdf_interp[t,i,:NS42_pvpdf_1.nb])]
+        maxprob_pv_1[t,i] = np.max(NS42_pvpdf_1.pdf_interp[t,i,:NS42_pvpdf_1.nb])
     maxpv_1[t,:] = np.log10(np.exp(maxpv_1[t,:])/(cb*ceps*(NS42_1.z_enc[t]/L_0)**(-4./3.)*(B0/nu)**3/42))
     
 maxpv_2 = np.zeros((len(pvlist_2),NS42_pvpdf_2.ny))
 maxprob_pv_2 = np.zeros((len(pvlist_2),NS42_pvpdf_2.ny))
 for t in range(len(pvlist_2)):
     for i in range(0,NS42_pvpdf_2.ny):
-        maxpv_2[t,i] = NS42_pvpdf_2.xy[0,t,i,np.argmax(NS42_pvpdf_2.pdf[t,i,:NS42_pvpdf_2.nb])]
-        maxprob_pv_2[t,i] = np.max(NS42_pvpdf_2.pdf[t,i,:NS42_pvpdf_2.nb])
+        maxpv_2[t,i] = NS42_pvpdf_2.xy[0,0,i,np.argmax(NS42_pvpdf_2.pdf_interp[t,i,:NS42_pvpdf_2.nb])]
+        maxprob_pv_2[t,i] = np.max(NS42_pvpdf_2.pdf_interp[t,i,:NS42_pvpdf_2.nb])
     maxpv_2[t,:] = np.log10(np.exp(maxpv_2[t,:])/(cb*ceps*(NS42_2.z_enc[t]/L_0)**(-4./3.)*(B0/nu)**3/42))
     
 maxpv_3 = np.zeros((len(pvlist_3),NS42_pvpdf_3.ny))
 maxprob_pv_3 = np.zeros((len(pvlist_3),NS42_pvpdf_3.ny))
 for t in range(len(pvlist_3)):
     for i in range(0,NS42_pvpdf_3.ny):
-        maxpv_3[t,i] = NS42_pvpdf_3.xy[0,t,i,np.argmax(NS42_pvpdf_3.pdf[t,i,:NS42_pvpdf_3.nb])]
-        maxprob_pv_3[t,i] = np.max(NS42_pvpdf_3.pdf[t,i,:NS42_pvpdf_3.nb])
+        maxpv_3[t,i] = NS42_pvpdf_3.xy[0,0,i,np.argmax(NS42_pvpdf_3.pdf_interp[t,i,:NS42_pvpdf_3.nb])]
+        maxprob_pv_3[t,i] = np.max(NS42_pvpdf_3.pdf_interp[t,i,:NS42_pvpdf_3.nb])
     maxpv_3[t,:] = np.log10(np.exp(maxpv_3[t,:])/(cb*ceps*(NS42_3.z_enc[t]/L_0)**(-4./3.)*(B0/nu)**3/42))
 
 maxpv_S20 = np.zeros((len(pvlist_S20),pvpdf_S20.ny))
 maxprob_pv_S20 = np.zeros((len(pvlist_S20),pvpdf_S20.ny))
 for t in range(len(pvlist_S20)):
     for i in range(0,pvpdf_S20.ny):
-        maxpv_S20[t,i] = pvpdf_S20.xy[0,t,i,np.argmax(pvpdf_S20.pdf[t,i,:pvpdf_S20.nb])]
-        maxprob_pv_S20[t,i] = np.max(pvpdf_S20.pdf[t,i,:pvpdf_S20.nb])
+        maxpv_S20[t,i] = pvpdf_S20.xy[0,0,i,np.argmax(pvpdf_S20.pdf_interp[t,i,:pvpdf_S20.nb])]
+        maxprob_pv_S20[t,i] = np.max(pvpdf_S20.pdf_interp[t,i,:pvpdf_S20.nb])
     maxpv_S20[t,:] = np.log10(np.exp(maxpv_S20[t,:])/(cb*ceps*(S20.z_enc[t]/L_0)**(-4./3.)*(B0/nu)**3/42))
 
 # Find saddle as point where maxprob has a minimum
 
-y_vort_1_saddle = np.zeros(len(vortlist_1))
-maxvort_1_saddle = np.zeros(len(vortlist_1))
-for t in range(len(vortlist_1)):
-    y_vort_1_saddle[t] = NS42_1.y[np.argmin(maxprob_vort_1[t,:])]
+y_vort_1_saddle = np.zeros(len(vortlist_1)-2)
+maxvort_1_saddle = np.zeros(len(vortlist_1)-2)
+for t in range(len(vortlist_1)-2):
+    y_vort_1_saddle[t] = NS42_1.y[np.argmin(maxprob_vort_1[t,:])] 
     maxvort_1_saddle[t] = maxvort_1[t,np.argmin(np.abs(y_vort_1_saddle[t]-NS42_1.y))]
     y_vort_1_saddle[t] = y_vort_1_saddle[t]/NS42_1.z_enc[t]
     
 y_vort_2_saddle = np.zeros(len(vortlist_2))
 maxvort_2_saddle = np.zeros(len(vortlist_2))
 for t in range(len(vortlist_2)):
-    y_vort_2_saddle[t] = NS42_2.y[np.argmin(maxprob_vort_2[t,:])]
+    y_vort_2_saddle[t] = NS42_2.y[np.argmin(maxprob_vort_2[t,NS42_2.z_enc_arg[t]:NS42_2.z_ig_arg[t]])+NS42_2.z_enc_arg[t]]
     maxvort_2_saddle[t] = maxvort_2[t,np.argmin(np.abs(y_vort_2_saddle[t]-NS42_2.y))]
     y_vort_2_saddle[t] = y_vort_2_saddle[t]/NS42_2.z_enc[t]
      
 y_vort_3_saddle = np.zeros(len(vortlist_3))
 maxvort_3_saddle = np.zeros(len(vortlist_3))
 for t in range(len(vortlist_3)):
-    y_vort_3_saddle[t] = NS42_3.y[np.argmin(maxprob_vort_3[t,:])]
+    y_vort_3_saddle[t] = NS42_3.y[np.argmin(maxprob_vort_3[t,NS42_3.z_enc_arg[t]:NS42_3.z_ig_arg[t]])+NS42_3.z_enc_arg[t]]
     maxvort_3_saddle[t] = maxvort_3[t,np.argmin(np.abs(y_vort_3_saddle[t]-NS42_3.y))]
     y_vort_3_saddle[t] = y_vort_3_saddle[t]/NS42_3.z_enc[t]
 
 y_vort_S20_saddle = np.zeros(len(vortlist_S20))
 maxvort_S20_saddle = np.zeros(len(vortlist_S20))
 for t in range(len(vortlist_S20)):
-    y_vort_S20_saddle[t] = S20.y[np.argmin(maxprob_vort_S20[t,:])]
+    y_vort_S20_saddle[t] = S20.y[np.argmin(maxprob_vort_S20[t,S20.z_enc_arg[t]:S20.z_ig_arg[t]])+S20.z_enc_arg[t]] 
     maxvort_S20_saddle[t] = maxvort_S20[t,np.argmin(np.abs(y_vort_S20_saddle[t]-S20.y))]
     y_vort_S20_saddle[t] = y_vort_S20_saddle[t]/S20.z_enc[t]
 
 y_pv_1_saddle = np.zeros(len(pvlist_1))
 maxpv_1_saddle = np.zeros(len(pvlist_1))
 for t in range(len(pvlist_1)):
-    y_pv_1_saddle[t] = NS42_1.y[np.argmin(maxprob_pv_1[t,NS42_1.z_enc_arg[t]:])+NS42_1.z_enc_arg[t]]
+    y_pv_1_saddle[t] = NS42_1.y[np.argmin(maxprob_pv_1[t,NS42_1.z_enc_arg[t]:-30])+NS42_1.z_enc_arg[t]]
     maxpv_1_saddle[t] = maxpv_1[t,np.argmin(np.abs(y_pv_1_saddle[t]-NS42_1.y))]
     y_pv_1_saddle[t] = y_pv_1_saddle[t]/NS42_1.z_enc[t]
     
 y_pv_2_saddle = np.zeros(len(pvlist_2))
 maxpv_2_saddle = np.zeros(len(pvlist_2))
 for t in range(len(pvlist_2)):
-    y_pv_2_saddle[t] = NS42_2.y[np.argmin(maxprob_pv_2[t,NS42_2.z_enc_arg[t]:])+NS42_2.z_enc_arg[t]]
+    y_pv_2_saddle[t] = NS42_2.y[np.argmin(maxprob_pv_2[t,NS42_2.z_enc_arg[t]:-30])+NS42_2.z_enc_arg[t]]
     maxpv_2_saddle[t] = maxpv_2[t,np.argmin(np.abs(y_pv_2_saddle[t]-NS42_2.y))]
     y_pv_2_saddle[t] = y_pv_2_saddle[t]/NS42_2.z_enc[t]
       
 y_pv_3_saddle = np.zeros(len(pvlist_3))
 maxpv_3_saddle = np.zeros(len(pvlist_3))
 for t in range(len(pvlist_3)):
-    y_pv_3_saddle[t] = NS42_3.y[np.argmin(maxprob_pv_3[t,NS42_3.z_enc_arg[t]:])+NS42_3.z_enc_arg[t]]
+    y_pv_3_saddle[t] = NS42_3.y[np.argmin(maxprob_pv_3[t,NS42_3.z_enc_arg[t]:-30])+NS42_3.z_enc_arg[t]]
     maxpv_3_saddle[t] = maxpv_3[t,np.argmin(np.abs(y_pv_3_saddle[t]-NS42_3.y))]
     y_pv_3_saddle[t] = y_pv_3_saddle[t]/NS42_3.z_enc[t]
 
 y_pv_S20_saddle = np.zeros(len(pvlist_S20))
 maxpv_S20_saddle = np.zeros(len(pvlist_S20))
 for t in range(len(pvlist_S20)):
-    y_pv_S20_saddle[t] = S20.y[np.argmin(maxprob_pv_S20[t,S20.z_enc_arg[t]:])+S20.z_enc_arg[t]]
+    y_pv_S20_saddle[t] = S20.y[np.argmin(maxprob_pv_S20[t,S20.z_enc_arg[t]:-30])+S20.z_enc_arg[t]]
     maxpv_S20_saddle[t] = maxpv_S20[t,np.argmin(np.abs(y_pv_S20_saddle[t]-S20.y))]
     y_pv_S20_saddle[t] = y_pv_S20_saddle[t]/S20.z_enc[t]
 
@@ -254,7 +260,7 @@ ax2.set_xlabel(r'$z_\mathrm{enc}/L_0$')
 ax1.set_ylabel(r'$z_\mathrm{saddle}/z_\mathrm{enc}$')
 ax1.legend(loc='best',fontsize=20)
 plt.tight_layout()
-plt.savefig(opath+'pdfs_saddle_height_time_S20_S0.pdf')
+#plt.savefig(opath+'pdfs_saddle_height_time_S20_S0.pdf')
 plt.show()
 
 #Presentations

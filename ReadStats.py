@@ -227,7 +227,8 @@ class Pdfs:
         for n in range(len(data_path_pdf_list)):
             for j in range(self.ny):
                 pdf_interp[n,j,:-2] = np.interp(np.linspace(self.pdf[0,j,self.nb],self.pdf[0,j,self.nb + 1],num=self.nb),np.linspace(self.pdf[n,j,self.nb],self.pdf[n,j,self.nb + 1],num=self.nb),self.pdf[n,j,:-2])
-        self.pdf_timeavg = np.mean(pdf_interp,axis=0)   
+        self.pdf_timeavg = np.mean(pdf_interp,axis=0)
+        self.pdf_interp = pdf_interp
 
         
         # normalizing histograms to obtain pdf (s.t. it integrates to 1 using midpoint rule)     
@@ -237,11 +238,18 @@ class Pdfs:
                 samplestep = (self.pdf[n,j,self.nb + 1] - self.pdf[n,j,self.nb]) / (self.nb - 1)
                 if samplestep > 0: # otherwise the pdf is zero, by construction in Tlab
                     self.pdf[n,j,:self.nb] = self.pdf[n,j,:self.nb] / (samplesize * samplestep)
+        for n in range(len(data_path_pdf_list)):
+            for j in range(self.ny + 1):
+                samplesize = np.sum(self.pdf_interp[n,j,:self.nb])
+                samplestep = (self.pdf_interp[n,j,self.nb + 1] - self.pdf_interp[n,j,self.nb]) / (self.nb - 1)
+                if samplestep > 0: 
+                    self.pdf_interp[n,j,:self.nb] = self.pdf_interp[n,j,:self.nb] / (samplesize * samplestep)
         for j in range(self.ny + 1):
             samplesize = np.sum(self.pdf_timeavg[j,:self.nb])
             samplestep = (self.pdf_timeavg[j,self.nb + 1] - self.pdf_timeavg[j,self.nb]) / (self.nb - 1)
             if samplestep > 0: 
                 self.pdf_timeavg[j,:self.nb] = self.pdf_timeavg[j,:self.nb] / (samplesize * samplestep)
+        
                 
         
         # axis information
