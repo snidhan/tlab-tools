@@ -84,52 +84,69 @@ pvpdf_S20 = Pdfs(pvlist_S20,path_S20+'y.dat')
 
 # Create grid on which to interpolate pdfs
 
-NS42_vortpdf_interp_data_1 = Pdfs([path_42+'2560x576x2560/stats/pdfs/pdf41500.LnEnstrophyW_iW_i'],path_42+'2560x576x2560/y.dat')
-NS42_pvpdf_interp_data_1 = Pdfs([path_42+'2560x576x2560/stats/pdfs/pdf41500.LnPotentialEnstrophy'],path_42+'2560x576x2560/y.dat')
-NS42_vortpdf_interp_data_2 = Pdfs([path_42+'2560x704x2560/stats/pdfs/pdf67000.LnEnstrophyW_iW_i'],path_42+'2560x704x2560/y.dat')
-NS42_pvpdf_interp_data_2 = Pdfs([path_42+'2560x704x2560/stats/pdfs/pdf67000.LnPotentialEnstrophy'],path_42+'2560x704x2560/y.dat')
-NS42_vortpdf_interp_data_3 = Pdfs([path_42+'2560x896x2560/stats/pdfs/pdf102500.LnEnstrophyW_iW_i'],path_42+'2560x896x2560/y.dat')
-NS42_pvpdf_interp_data_3 = Pdfs([path_42+'2560x896x2560/stats/pdfs/pdf102500.LnPotentialEnstrophy'],path_42+'2560x896x2560/y.dat')
+NS42_vortpdf_interp_data = Pdfs([path_3+'stats/pdfs/pdf102500.LnEnstrophyW_iW_i'],path_3+'y.dat')
+NS42_pvpdf_interp_data = Pdfs([path_3+'stats/pdfs/pdf102500.LnPotentialEnstrophy'],path_3+'y.dat')
 
+S20_vortpdf_interp_data = Pdfs([path_S20+'stats/pdfs/pdf75000.LnEnstrophyW_iW_i'],path_S20+'y.dat')
+S20_pvpdf_interp_data = Pdfs([path_S20+'stats/pdfs/pdf75000.LnPotentialEnstrophy'],path_S20+'y.dat')
 
-S20_vortpdf_interp_data = Pdfs([path_42+'3072x960x4608-S20/stats/pdfs/pdf75000.LnEnstrophyW_iW_i'],path_42+'3072x960x4608-S20/y.dat')
-S20_pvpdf_interp_data = Pdfs([path_42+'3072x960x4608-S20/stats/pdfs/pdf75000.LnPotentialEnstrophy'],path_42+'3072x960x4608-S20/y.dat')
+# Interpolate pdfs in y-direction
 
-# Interpolate pdfs
-
-NS42_vortpdf_interp_1 = np.zeros((len(vortlist_1),NS42_1.y_len,NS42_vortpdf_1.nb))
+NS42_vortpdf_interp_1_y = np.zeros((len(vortlist_1),NS42_3.y_len,NS42_vortpdf_1.nb+2))
 for n in range(len(vortlist_1)):
-    for j in range(NS42_1.y_len):
-        NS42_vortpdf_interp_1[n,j,:] = np.interp(NS42_vortpdf_interp_data_1.xy[0,0,j,:],NS42_vortpdf_1.xy[0,n,j,:],NS42_vortpdf_1.pdf[n,j,:-2])
+    for i in range(NS42_vortpdf_1.nb+2):
+        NS42_vortpdf_interp_1_y[n,:,i] = np.interp(NS42_3.y,NS42_1.y,NS42_vortpdf_1.pdf[n,:-1,i])
 
-NS42_vortpdf_interp_2 = np.zeros((len(vortlist_2),NS42_2.y_len,NS42_vortpdf_2.nb))
+NS42_vortpdf_interp_2_y = np.zeros((len(vortlist_2),NS42_3.y_len,NS42_vortpdf_2.nb+2))
 for n in range(len(vortlist_2)):
-    for j in range(NS42_2.y_len):
-        NS42_vortpdf_interp_2[n,j,:] = np.interp(NS42_vortpdf_interp_data_2.xy[0,0,j,:],NS42_vortpdf_2.xy[0,n,j,:],NS42_vortpdf_2.pdf[n,j,:-2])
+    for i in range(NS42_vortpdf_2.nb+2):
+        NS42_vortpdf_interp_2_y[n,:,i] = np.interp(NS42_3.y,NS42_2.y,NS42_vortpdf_2.pdf[n,:-1,i])
+
+NS42_pvpdf_interp_1_y = np.zeros((len(pvlist_1),NS42_3.y_len,NS42_pvpdf_1.nb+2))
+for n in range(len(pvlist_1)):
+    for i in range(NS42_pvpdf_1.nb+2):
+        NS42_pvpdf_interp_1_y[n,:,i] = np.interp(NS42_3.y,NS42_1.y,NS42_pvpdf_1.pdf[n,:-1,i])
+
+NS42_pvpdf_interp_2_y = np.zeros((len(pvlist_2),NS42_3.y_len,NS42_pvpdf_2.nb+2))
+for n in range(len(pvlist_2)):
+    for i in range(NS42_pvpdf_2.nb+2):
+        NS42_pvpdf_interp_2_y[n,:,i] = np.interp(NS42_3.y,NS42_2.y,NS42_pvpdf_2.pdf[n,:-1,i])
+        
+# Interpolate pdfs in x-direction
+
+NS42_vortpdf_interp_1 = np.zeros((len(vortlist_1),NS42_3.y_len,NS42_vortpdf_1.nb))
+for n in range(len(vortlist_1)):
+    for j in range(NS42_3.y_len):
+        NS42_vortpdf_interp_1[n,j,:] = np.interp(NS42_vortpdf_interp_data.xy[0,0,j,:],np.linspace(NS42_vortpdf_interp_1_y[n,j,NS42_vortpdf_1.nb],NS42_vortpdf_interp_1_y[n,j,NS42_vortpdf_1.nb + 1],num=NS42_vortpdf_1.nb),NS42_vortpdf_interp_1_y[n,j,:-2])
+
+NS42_vortpdf_interp_2 = np.zeros((len(vortlist_2),NS42_3.y_len,NS42_vortpdf_2.nb))
+for n in range(len(vortlist_2)):
+    for j in range(NS42_3.y_len):
+        NS42_vortpdf_interp_2[n,j,:] = np.interp(NS42_vortpdf_interp_data.xy[0,0,j,:],np.linspace(NS42_vortpdf_interp_2_y[n,j,NS42_vortpdf_2.nb],NS42_vortpdf_interp_2_y[n,j,NS42_vortpdf_2.nb + 1],num=NS42_vortpdf_2.nb),NS42_vortpdf_interp_2_y[n,j,:-2])
 
 NS42_vortpdf_interp_3 = np.zeros((len(vortlist_3),NS42_3.y_len,NS42_vortpdf_3.nb))
 for n in range(len(vortlist_3)):
     for j in range(NS42_3.y_len):
-        NS42_vortpdf_interp_3[n,j,:] = np.interp(NS42_vortpdf_interp_data_3.xy[0,0,j,:],NS42_vortpdf_3.xy[0,n,j,:],NS42_vortpdf_3.pdf[n,j,:-2])
+        NS42_vortpdf_interp_3[n,j,:] = np.interp(NS42_vortpdf_interp_data.xy[0,0,j,:],NS42_vortpdf_3.xy[0,n,j,:],NS42_vortpdf_3.pdf[n,j,:-2])
 
-NS42_vortpdf_interp = np.array([NS42_vortpdf_interp_1,NS42_vortpdf_interp_2,NS42_vortpdf_interp_3])
+NS42_vortpdf_interp = np.concatenate((NS42_vortpdf_interp_1,NS42_vortpdf_interp_2,NS42_vortpdf_interp_3),axis=0)
 
-NS42_pvpdf_interp_1 = np.zeros((len(pvlist_1),NS42_1.y_len,NS42_pvpdf_1.nb))
+NS42_pvpdf_interp_1 = np.zeros((len(pvlist_1),NS42_3.y_len,NS42_pvpdf_1.nb))
 for n in range(len(pvlist_1)):
-    for j in range(NS42_1.y_len):
-        NS42_pvpdf_interp_1[n,j,:] = np.interp(NS42_pvpdf_interp_data_1.xy[0,0,j,:],NS42_pvpdf_1.xy[0,n,j,:],NS42_pvpdf_1.pdf[n,j,:-2])
+    for j in range(NS42_3.y_len):
+        NS42_pvpdf_interp_1[n,j,:] = np.interp(NS42_pvpdf_interp_data.xy[0,0,j,:],np.linspace(NS42_pvpdf_interp_1_y[n,j,NS42_pvpdf_1.nb],NS42_pvpdf_interp_1_y[n,j,NS42_pvpdf_1.nb + 1],num=NS42_pvpdf_1.nb),NS42_pvpdf_interp_1_y[n,j,:-2])
 
-NS42_pvpdf_interp_2 = np.zeros((len(pvlist_2),NS42_2.y_len,NS42_pvpdf_2.nb))
+NS42_pvpdf_interp_2 = np.zeros((len(pvlist_2),NS42_3.y_len,NS42_pvpdf_2.nb))
 for n in range(len(pvlist_2)):
-    for j in range(NS42_2.y_len):
-        NS42_pvpdf_interp_2[n,j,:] = np.interp(NS42_pvpdf_interp_data_2.xy[0,0,j,:],NS42_pvpdf_2.xy[0,n,j,:],NS42_pvpdf_2.pdf[n,j,:-2])
+    for j in range(NS42_3.y_len):
+        NS42_pvpdf_interp_2[n,j,:] = np.interp(NS42_pvpdf_interp_data.xy[0,0,j,:],np.linspace(NS42_pvpdf_interp_2_y[n,j,NS42_pvpdf_2.nb],NS42_pvpdf_interp_2_y[n,j,NS42_pvpdf_2.nb + 1],num=NS42_pvpdf_2.nb),NS42_pvpdf_interp_2_y[n,j,:-2])
 
 NS42_pvpdf_interp_3 = np.zeros((len(pvlist_3),NS42_3.y_len,NS42_pvpdf_3.nb))
 for n in range(len(pvlist_3)):
     for j in range(NS42_3.y_len):
-        NS42_pvpdf_interp_3[n,j,:] = np.interp(NS42_pvpdf_interp_data_3.xy[0,0,j,:],NS42_pvpdf_3.xy[0,n,j,:],NS42_pvpdf_3.pdf[n,j,:-2])
+        NS42_pvpdf_interp_3[n,j,:] = np.interp(NS42_pvpdf_interp_data.xy[0,0,j,:],NS42_pvpdf_3.xy[0,n,j,:],NS42_pvpdf_3.pdf[n,j,:-2])
 
-NS42_pvpdf_interp = np.array([NS42_pvpdf_interp_1,NS42_pvpdf_interp_2,NS42_pvpdf_interp_3])
+NS42_pvpdf_interp = np.concatenate((NS42_pvpdf_interp_1,NS42_pvpdf_interp_2,NS42_pvpdf_interp_3),axis=0)
 
 S20_vortpdf_interp = np.zeros((len(vortlist_S20),S20.y_len,vortpdf_S20.nb))
 for n in range(len(vortlist_S20)):
@@ -143,7 +160,7 @@ for n in range(len(pvlist_S20)):
 
 # Running mean of pdfs
 
-NS42_vortpdf_interp_runmean = np.zeros((np.ma.size(NS42_vortpdf_interp,0)-2,NS42_1.y_len,NS42_vortpdf_1.nb))
+NS42_vortpdf_interp_runmean = np.zeros((np.ma.size(NS42_vortpdf_interp,0)-2,NS42_3.y_len,NS42_vortpdf_1.nb))
 for n in range(1,np.ma.size(NS42_vortpdf_interp,0)-1):
     NS42_vortpdf_interp_runmean[n-1,:,:] = np.mean(NS42_vortpdf_interp[n-1:n+2,:,:],axis=0)
 
@@ -151,7 +168,7 @@ S20_vortpdf_interp_runmean = np.zeros((np.ma.size(S20_vortpdf_interp,0)-2,S20.y_
 for n in range(1,np.ma.size(S20_vortpdf_interp,0)-1):
     S20_vortpdf_interp_runmean[n-1,:,:] = np.mean(S20_vortpdf_interp[n-1:n+2,:,:],axis=0)
 
-NS42_pvpdf_interp_runmean = np.zeros((np.ma.size(NS42_pvpdf_interp,0)-2,NS42_1.y_len,NS42_pvpdf_1.nb))
+NS42_pvpdf_interp_runmean = np.zeros((np.ma.size(NS42_pvpdf_interp,0)-2,NS42_3.y_len,NS42_pvpdf_1.nb))
 for n in range(1,np.ma.size(NS42_pvpdf_interp,0)-1):
     NS42_pvpdf_interp_runmean[n-1,:,:] = np.mean(NS42_pvpdf_interp[n-1:n+2,:,:],axis=0)
 
@@ -161,36 +178,36 @@ for n in range(1,np.ma.size(S20_pvpdf_interp,0)-1):
 
 # Find where pdf has a maximum at each height
 
-maxvort_NS42 = np.zeros((np.ma.size(NS42_vortpdf_interp_runmean,0),NS42_1.y_len))
-maxprob_vort_NS42 = np.zeros((np.ma.size(NS42_vortpdf_interp_runmean,0),NS42_1.y_len))
+maxvort_NS42 = np.zeros((np.ma.size(NS42_vortpdf_interp_runmean,0),NS42_3.y_len))
+maxprob_vort_NS42 = np.zeros((np.ma.size(NS42_vortpdf_interp_runmean,0),NS42_3.y_len))
 for t in range(0,np.ma.size(NS42_vortpdf_interp_runmean,0)):
-    for i in range(0,NS42_1.y_len):
-        maxvort_NS42[t,i] = xdat_vort[np.argmax(NS42_vortpdf_interp_runmean[t,i,:])]
-        maxprob_vort_NS42[t,i] = np.max(NS42_vortpdf_interp_runmean[t,i,:])
+    for j in range(0,NS42_3.y_len):
+        maxvort_NS42[t,j] = NS42_vortpdf_interp_data.xy[0,0,j,np.argmax(NS42_vortpdf_interp_runmean[t,j,:])]
+        maxprob_vort_NS42[t,j] = np.max(NS42_vortpdf_interp_runmean[t,j,:])
 maxvort_NS42 = np.log10(np.exp(maxvort_NS42)/(ceps*B0/nu))
 
 maxvort_S20 = np.zeros((np.ma.size(S20_vortpdf_interp_runmean,0),S20.y_len))
 maxprob_vort_S20 = np.zeros((np.ma.size(S20_vortpdf_interp_runmean,0),S20.y_len))
 for t in range(0,np.ma.size(S20_vortpdf_interp_runmean,0)):
-    for i in range(0,S20.y_len):
-        maxvort_S20[t,i] = xdat_vort[np.argmax(S20_vortpdf_interp_runmean[t,i,:])]
-        maxprob_vort_S20[t,i] = np.max(S20_vortpdf_interp_runmean[t,i,:])
+    for j in range(0,S20.y_len):
+        maxvort_S20[t,j] = S20_vortpdf_interp_data.xy[0,0,j,np.argmax(S20_vortpdf_interp_runmean[t,j,:])]
+        maxprob_vort_S20[t,j] = np.max(S20_vortpdf_interp_runmean[t,j,:])
 maxvort_S20 = np.log10(np.exp(maxvort_S20)/(ceps*B0/nu))
 
-maxpv_NS42 = np.zeros((np.ma.size(NS42_pvpdf_interp_runmean,0),NS42_1.y_len))
-maxprob_pv_NS42 = np.zeros((np.ma.size(NS42_pvpdf_interp_runmean,0),NS42_1.y_len))
+maxpv_NS42 = np.zeros((np.ma.size(NS42_pvpdf_interp_runmean,0),NS42_3.y_len))
+maxprob_pv_NS42 = np.zeros((np.ma.size(NS42_pvpdf_interp_runmean,0),NS42_3.y_len))
 for t in range(0,np.ma.size(NS42_pvpdf_interp_runmean,0)):
-    for i in range(0,NS42_1.y_len):
-        maxpv_NS42[t,i] = xdat_pv[np.argmax(NS42_pvpdf_interp_runmean[t,i,:])]
-        maxprob_pv_NS42[t,i] = np.max(NS42_pvpdf_interp_runmean[t,i,:])
+    for j in range(0,NS42_3.y_len):
+        maxpv_NS42[t,j] = NS42_pvpdf_interp_data.xy[0,0,j,np.argmax(NS42_pvpdf_interp_runmean[t,j,:])]
+        maxprob_pv_NS42[t,j] = np.max(NS42_pvpdf_interp_runmean[t,j,:])
     maxpv_NS42[t,:] = np.log10(np.exp(maxpv_NS42[t,:])/(cb*ceps*(z_enc_NS42[t+1]/L_0)**(-4./3.)*(B0/nu)**3/42))
 
 maxpv_S20 = np.zeros((np.ma.size(S20_pvpdf_interp_runmean,0),S20.y_len))
 maxprob_pv_S20 = np.zeros((np.ma.size(S20_pvpdf_interp_runmean,0),S20.y_len))
 for t in range(0,np.ma.size(S20_pvpdf_interp_runmean,0)):
-    for i in range(0,S20.y_len):
-        maxpv_S20[t,i] = xdat_pv[np.argmax(S20_pvpdf_interp_runmean[t,i,:])]
-        maxprob_pv_S20[t,i] = np.max(S20_pvpdf_interp_runmean[t,i,:])
+    for j in range(0,S20.y_len):
+        maxpv_S20[t,j] = S20_pvpdf_interp_data.xy[0,0,j,np.argmax(S20_pvpdf_interp_runmean[t,j,:])]
+        maxprob_pv_S20[t,j] = np.max(S20_pvpdf_interp_runmean[t,j,:])
     maxpv_S20[t,:] = np.log10(np.exp(maxpv_S20[t,:])/(cb*ceps*(S20.z_enc[t+1]/L_0)**(-4./3.)*(B0/nu)**3/42))
          
 # maxpv_1 = np.zeros((len(pvlist_1),NS42_pvpdf_1.ny))
@@ -230,21 +247,21 @@ for t in range(0,np.ma.size(S20_pvpdf_interp_runmean,0)):
 y_vort_NS42_saddle = np.zeros(np.ma.size(NS42_vortpdf_interp_runmean,0))
 maxvort_NS42_saddle = np.zeros(np.ma.size(NS42_vortpdf_interp_runmean,0))
 for t in range(np.ma.size(NS42_vortpdf_interp_runmean,0)):
-    y_vort_NS42_saddle[t] = NS42_1.y[np.argmin(maxprob_vort_NS42[t,:])]
-    maxvort_NS42_saddle[t] = maxvort_NS42[t,np.argmin(np.abs(y_vort_NS42_saddle[t]-NS42_1.y))]
+    y_vort_NS42_saddle[t] = NS42_3.y[np.argmin(maxprob_vort_NS42[t,:-150])]
+    maxvort_NS42_saddle[t] = maxvort_NS42[t,np.argmin(np.abs(y_vort_NS42_saddle[t]-NS42_3.y))]
     y_vort_NS42_saddle[t] = y_vort_NS42_saddle[t]/z_enc_NS42[t+1]
 
 y_vort_S20_saddle = np.zeros(np.ma.size(S20_vortpdf_interp_runmean,0))
 maxvort_S20_saddle = np.zeros(np.ma.size(S20_vortpdf_interp_runmean,0))
 for t in range(np.ma.size(S20_vortpdf_interp_runmean,0)):
-    y_vort_S20_saddle[t] = S20.y[np.argmin(maxprob_vort_S20[t,:])]
+    y_vort_S20_saddle[t] = S20.y[np.argmin(maxprob_vort_S20[t,:-100])]
     maxvort_S20_saddle[t] = maxvort_S20[t,np.argmin(np.abs(y_vort_S20_saddle[t]-S20.y))]
     y_vort_S20_saddle[t] = y_vort_S20_saddle[t]/S20.z_enc[t+1]
 
 y_pv_NS42_saddle = np.zeros(np.ma.size(NS42_pvpdf_interp_runmean,0))
 maxpv_NS42_saddle = np.zeros(np.ma.size(NS42_pvpdf_interp_runmean,0))
 for t in range(np.ma.size(NS42_pvpdf_interp_runmean,0)):
-    y_pv_NS42_saddle[t] = NS42_1.y[np.argmin(maxprob_pv_NS42[t,np.argmin(np.abs(z_enc_NS42[t+1]-NS42_1.y)):])+np.argmin(np.abs(z_enc_NS42[t+1]-NS42_1.y))]
+    y_pv_NS42_saddle[t] = NS42_3.y[np.argmin(maxprob_pv_NS42[t,np.argmin(np.abs(z_enc_NS42[t+1]-NS42_3.y)):])+np.argmin(np.abs(z_enc_NS42[t+1]-NS42_3.y))]
     maxpv_NS42_saddle[t] = maxpv_NS42[t,np.argmin(np.abs(y_pv_NS42_saddle[t]-NS42_1.y))]
     y_pv_NS42_saddle[t] = y_pv_NS42_saddle[t]/z_enc_NS42[t+1]
 
@@ -289,14 +306,14 @@ for t in range(np.ma.size(S20_pvpdf_interp_runmean,0)):
 time = np.concatenate((NS42_1.z_enc/L_0,NS42_2.z_enc/L_0,NS42_3.z_enc/L_0))
 z_is = np.concatenate((NS42_1.z_is/NS42_1.z_enc,NS42_2.z_is/NS42_2.z_enc,NS42_3.z_is/NS42_3.z_enc))
 z_if = np.concatenate((NS42_1.z_if/NS42_1.z_enc,NS42_2.z_if/NS42_2.z_enc,NS42_3.z_if/NS42_3.z_enc))
-y_vort_saddle = np.concatenate((y_vort_1_saddle,y_vort_2_saddle,y_vort_3_saddle))
-y_pv_saddle = np.concatenate((y_pv_1_saddle,y_pv_2_saddle,y_pv_3_saddle))
-maxvort_saddle = np.concatenate((maxvort_1_saddle,maxvort_2_saddle,maxvort_3_saddle))
-maxpv_saddle = np.concatenate((maxpv_1_saddle,maxpv_2_saddle,maxpv_3_saddle))
-y_vort_saddle_mean = runningmean(y_vort_saddle,1)
-y_pv_saddle_mean = runningmean(y_pv_saddle,1)
-maxvort_saddle_mean = runningmean(maxvort_saddle,1)
-maxpv_saddle_mean = runningmean(maxpv_saddle,1)
+# y_vort_saddle = np.concatenate((y_vort_1_saddle,y_vort_2_saddle,y_vort_3_saddle))
+# y_pv_saddle = np.concatenate((y_pv_1_saddle,y_pv_2_saddle,y_pv_3_saddle))
+# maxvort_saddle = np.concatenate((maxvort_1_saddle,maxvort_2_saddle,maxvort_3_saddle))
+# maxpv_saddle = np.concatenate((maxpv_1_saddle,maxpv_2_saddle,maxpv_3_saddle))
+# y_vort_saddle_mean = runningmean(y_vort_saddle,1)
+# y_pv_saddle_mean = runningmean(y_pv_saddle,1)
+# maxvort_saddle_mean = runningmean(maxvort_saddle,1)
+# maxpv_saddle_mean = runningmean(maxpv_saddle,1)
 
 #####################################################################
 # Plot
@@ -352,6 +369,9 @@ ax1.plot(time[1:-1],y_vort_NS42_saddle,c=blues(0.5))
 ax1.plot(time[1:-1],y_pv_NS42_saddle,c=oranges(0.5))
 ax1.plot(S20.z_enc[1:-1]/L_0,y_vort_S20_saddle,c=blues(0.7))
 ax1.plot(S20.z_enc[1:-1]/L_0,y_pv_S20_saddle,c=oranges(0.7))
+ax1.plot(S20.z_enc[1:-1]/L_0,runningmean(S20.z_ig/S20.z_enc,1),c=greys(0.7),ls='--',label=r'$z_{i,g}/z_\mathrm{enc}$')
+ax1.plot(time[1:-1],runningmean(z_is,1),c=greys(.5),ls='-.',label=r'$z_{i,s}/z_\mathrm{enc}$')
+ax1.plot(time[1:-1],runningmean(z_if,1),c=greys(.5),ls=':',label=r'$z_{i,f}/z_\mathrm{enc}$')
 ax2.plot(time[1:-1],maxvort_NS42_saddle,c=blues(0.5))
 ax2.plot(time[1:-1],maxpv_NS42_saddle,c=oranges(0.5))
 ax2.plot(S20.z_enc[1:-1]/L_0,maxvort_S20_saddle,c=blues(0.7))
@@ -359,7 +379,9 @@ ax2.plot(S20.z_enc[1:-1]/L_0,maxpv_S20_saddle,c=oranges(0.7))
 ax1.set_xlabel(r'$z_\mathrm{enc}/L_0$')
 ax2.set_xlabel(r'$z_\mathrm{enc}/L_0$')
 ax1.set_ylabel(r'$z_\mathrm{saddle}/z_\mathrm{enc}$')
+ax1.legend(loc='best',fontsize=20)
 plt.tight_layout()
+plt.savefig(opath+'pdfs_saddle_height_time_S20_S0_interpxy.pdf')
 plt.show()
 
 f, (ax1,ax2) = plt.subplots(1,2,sharex='all',figsize=(10,5))
