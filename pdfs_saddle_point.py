@@ -281,6 +281,8 @@ ax2.text(16,-5.3,r'$Fr_0=20$, $\mathrm{log}_{10}(\Pi^2/\Pi_0^2)$',color=oranges(
 ax1.set_xlabel(r'$z_\mathrm{enc}/L_0$')
 ax2.set_xlabel(r'$z_\mathrm{enc}/L_0$')
 ax1.set_ylabel(r'$z_\mathrm{saddle}/z_\mathrm{enc}$')
+ax1.set_title('(a)',fontsize=20,loc='left')
+ax2.set_title('(b)',fontsize=20,loc='left')
 ax1.legend(loc='best',fontsize=20)
 plt.tight_layout()
 plt.savefig(opath+'pdfs_saddle_height_time_S20_S0_interpxy.pdf')
