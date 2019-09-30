@@ -198,7 +198,7 @@ class Pdfs:
     # etype: < = little-endian, > = big-endian
     # dtype: f = floating point number, B = unsigned character (for gate files)
     # dimension: 1 for univariate, 2 for bivariate...so far only univariate
-    def __init__(self,data_path_pdf_list,data_path_ydat,sizeofdata=4,etype='<',dtype='f',dimension=1):
+    def __init__(self,data_path_pdf_list,data_path_ydat,it=0,sizeofdata=4,etype='<',dtype='f',dimension=1):
         
         self.y = np.loadtxt(data_path_ydat)
         self.ny = len(self.y)
