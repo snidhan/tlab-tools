@@ -83,80 +83,63 @@ vortpdf_S20 = Pdfs(vortlist_S20,path_S20+'y.dat')
 pvpdf_S20 = Pdfs(pvlist_S20,path_S20+'y.dat')
 
 # Create grid on which to interpolate pdfs
-# x-axis range depends on variable looked at and on height, so this is totally not generalisable!
-# In case of several different vertical grids, y-axis extends up to height of smallest grid
 
-xdat_vort = np.linspace(-10,10,num=NS42_vortpdf_1.nb)
-xdat_pv = np.linspace(-20,20,num=NS42_pvpdf_1.nb)
+NS42_vortpdf_interp_data_1 = Pdfs([path_42+'2560x576x2560/stats/pdfs/pdf41500.LnEnstrophyW_iW_i'],path_42+'2560x576x2560/y.dat')
+NS42_pvpdf_interp_data_1 = Pdfs([path_42+'2560x576x2560/stats/pdfs/pdf41500.LnPotentialEnstrophy'],path_42+'2560x576x2560/y.dat')
+NS42_vortpdf_interp_data_2 = Pdfs([path_42+'2560x704x2560/stats/pdfs/pdf67000.LnEnstrophyW_iW_i'],path_42+'2560x704x2560/y.dat')
+NS42_pvpdf_interp_data_2 = Pdfs([path_42+'2560x704x2560/stats/pdfs/pdf67000.LnPotentialEnstrophy'],path_42+'2560x704x2560/y.dat')
+NS42_vortpdf_interp_data_3 = Pdfs([path_42+'2560x896x2560/stats/pdfs/pdf102500.LnEnstrophyW_iW_i'],path_42+'2560x896x2560/y.dat')
+NS42_pvpdf_interp_data_3 = Pdfs([path_42+'2560x896x2560/stats/pdfs/pdf102500.LnPotentialEnstrophy'],path_42+'2560x896x2560/y.dat')
+
+
+S20_vortpdf_interp_data = Pdfs([path_42+'3072x960x4608-S20/stats/pdfs/pdf75000.LnEnstrophyW_iW_i'],path_42+'3072x960x4608-S20/y.dat')
+S20_pvpdf_interp_data = Pdfs([path_42+'3072x960x4608-S20/stats/pdfs/pdf75000.LnPotentialEnstrophy'],path_42+'3072x960x4608-S20/y.dat')
 
 # Interpolate pdfs
-# For pdfs with different vertical grids, interpolate to height of smallest grid
 
-NS42_vortpdf_0_interp = interpolate.interp2d(xdat_vort,NS42_1.y,NS42_vortpdf_1.pdf[0,:-1,:-2])
-NS42_vortpdf_1_interp = interpolate.interp2d(xdat_vort,NS42_1.y,NS42_vortpdf_1.pdf[1,:-1,:-2])
-NS42_vortpdf_2_interp = interpolate.interp2d(xdat_vort,NS42_1.y,NS42_vortpdf_1.pdf[2,:-1,:-2])
-NS42_vortpdf_3_interp = interpolate.interp2d(xdat_vort,NS42_1.y,NS42_vortpdf_1.pdf[3,:-1,:-2])
-NS42_vortpdf_4_interp = interpolate.interp2d(xdat_vort,NS42_1.y,NS42_vortpdf_1.pdf[4,:-1,:-2])
-NS42_vortpdf_5_interp = interpolate.interp2d(xdat_vort,NS42_1.y,NS42_vortpdf_1.pdf[5,:-1,:-2])
-NS42_vortpdf_6_interp = interpolate.interp2d(xdat_vort,NS42_1.y,NS42_vortpdf_1.pdf[6,:-1,:-2])
-NS42_vortpdf_7_interp = interpolate.interp2d(xdat_vort,NS42_1.y,NS42_vortpdf_1.pdf[7,:-1,:-2])
-NS42_vortpdf_8_interp = interpolate.interp2d(xdat_vort,NS42_2.y,NS42_vortpdf_2.pdf[0,:-1,:-2])
-NS42_vortpdf_9_interp = interpolate.interp2d(xdat_vort,NS42_2.y,NS42_vortpdf_2.pdf[1,:-1,:-2])
-NS42_vortpdf_10_interp = interpolate.interp2d(xdat_vort,NS42_2.y,NS42_vortpdf_2.pdf[2,:-1,:-2])
-NS42_vortpdf_11_interp = interpolate.interp2d(xdat_vort,NS42_3.y,NS42_vortpdf_3.pdf[0,:-1,:-2])
-NS42_vortpdf_12_interp = interpolate.interp2d(xdat_vort,NS42_3.y,NS42_vortpdf_3.pdf[1,:-1,:-2])
-NS42_vortpdf_13_interp = interpolate.interp2d(xdat_vort,NS42_3.y,NS42_vortpdf_3.pdf[2,:-1,:-2])
-NS42_vortpdf_14_interp = interpolate.interp2d(xdat_vort,NS42_3.y,NS42_vortpdf_3.pdf[3,:-1,:-2])
-NS42_vortpdf_15_interp = interpolate.interp2d(xdat_vort,NS42_3.y,NS42_vortpdf_3.pdf[4,:-1,:-2])
+NS42_vortpdf_interp_1 = np.zeros((len(vortlist_1),NS42_1.y_len,NS42_vortpdf_1.nb))
+for n in range(len(vortlist_1)):
+    for j in range(NS42_1.y_len):
+        NS42_vortpdf_interp_1[n,j,:] = np.interp(NS42_vortpdf_interp_data_1.xy[0,0,j,:],NS42_vortpdf_1.xy[0,n,j,:],NS42_vortpdf_1.pdf[n,j,:-2])
 
-NS42_vortpdf_interp = np.array([NS42_vortpdf_0_interp(xdat_vort,NS42_1.y),NS42_vortpdf_1_interp(xdat_vort,NS42_1.y),NS42_vortpdf_2_interp(xdat_vort,NS42_1.y),NS42_vortpdf_3_interp(xdat_vort,NS42_1.y),NS42_vortpdf_4_interp(xdat_vort,NS42_1.y),NS42_vortpdf_5_interp(xdat_vort,NS42_1.y),NS42_vortpdf_6_interp(xdat_vort,NS42_1.y),NS42_vortpdf_7_interp(xdat_vort,NS42_1.y),NS42_vortpdf_8_interp(xdat_vort,NS42_1.y),NS42_vortpdf_9_interp(xdat_vort,NS42_1.y),NS42_vortpdf_10_interp(xdat_vort,NS42_1.y),NS42_vortpdf_11_interp(xdat_vort,NS42_1.y),NS42_vortpdf_12_interp(xdat_vort,NS42_1.y),NS42_vortpdf_13_interp(xdat_vort,NS42_1.y),NS42_vortpdf_14_interp(xdat_vort,NS42_1.y),NS42_vortpdf_15_interp(xdat_vort,NS42_1.y)])
+NS42_vortpdf_interp_2 = np.zeros((len(vortlist_2),NS42_2.y_len,NS42_vortpdf_2.nb))
+for n in range(len(vortlist_2)):
+    for j in range(NS42_2.y_len):
+        NS42_vortpdf_interp_2[n,j,:] = np.interp(NS42_vortpdf_interp_data_2.xy[0,0,j,:],NS42_vortpdf_2.xy[0,n,j,:],NS42_vortpdf_2.pdf[n,j,:-2])
 
-S20_vortpdf_0_interp = interpolate.interp2d(xdat_vort,S20.y,vortpdf_S20.pdf[0,:-1,:-2])
-S20_vortpdf_1_interp = interpolate.interp2d(xdat_vort,S20.y,vortpdf_S20.pdf[1,:-1,:-2])
-S20_vortpdf_2_interp = interpolate.interp2d(xdat_vort,S20.y,vortpdf_S20.pdf[2,:-1,:-2])
-S20_vortpdf_3_interp = interpolate.interp2d(xdat_vort,S20.y,vortpdf_S20.pdf[3,:-1,:-2])
-S20_vortpdf_4_interp = interpolate.interp2d(xdat_vort,S20.y,vortpdf_S20.pdf[4,:-1,:-2])
-S20_vortpdf_5_interp = interpolate.interp2d(xdat_vort,S20.y,vortpdf_S20.pdf[5,:-1,:-2])
-S20_vortpdf_6_interp = interpolate.interp2d(xdat_vort,S20.y,vortpdf_S20.pdf[6,:-1,:-2])
-S20_vortpdf_7_interp = interpolate.interp2d(xdat_vort,S20.y,vortpdf_S20.pdf[7,:-1,:-2])
-S20_vortpdf_8_interp = interpolate.interp2d(xdat_vort,S20.y,vortpdf_S20.pdf[8,:-1,:-2])
-S20_vortpdf_9_interp = interpolate.interp2d(xdat_vort,S20.y,vortpdf_S20.pdf[9,:-1,:-2])
-S20_vortpdf_10_interp = interpolate.interp2d(xdat_vort,S20.y,vortpdf_S20.pdf[10,:-1,:-2])
+NS42_vortpdf_interp_3 = np.zeros((len(vortlist_3),NS42_3.y_len,NS42_vortpdf_3.nb))
+for n in range(len(vortlist_3)):
+    for j in range(NS42_3.y_len):
+        NS42_vortpdf_interp_3[n,j,:] = np.interp(NS42_vortpdf_interp_data_3.xy[0,0,j,:],NS42_vortpdf_3.xy[0,n,j,:],NS42_vortpdf_3.pdf[n,j,:-2])
 
-S20_vortpdf_interp = np.array([S20_vortpdf_0_interp(xdat_vort,S20.y),S20_vortpdf_1_interp(xdat_vort,S20.y),S20_vortpdf_2_interp(xdat_vort,S20.y),S20_vortpdf_3_interp(xdat_vort,S20.y),S20_vortpdf_4_interp(xdat_vort,S20.y),S20_vortpdf_5_interp(xdat_vort,S20.y),S20_vortpdf_6_interp(xdat_vort,S20.y),S20_vortpdf_7_interp(xdat_vort,S20.y),S20_vortpdf_8_interp(xdat_vort,S20.y),S20_vortpdf_9_interp(xdat_vort,S20.y),S20_vortpdf_10_interp(xdat_vort,S20.y)])
+NS42_vortpdf_interp = np.array([NS42_vortpdf_interp_1,NS42_vortpdf_interp_2,NS42_vortpdf_interp_3])
 
-NS42_pvpdf_0_interp = interpolate.interp2d(xdat_pv,NS42_1.y,NS42_pvpdf_1.pdf[0,:-1,:-2])
-NS42_pvpdf_1_interp = interpolate.interp2d(xdat_pv,NS42_1.y,NS42_pvpdf_1.pdf[1,:-1,:-2])
-NS42_pvpdf_2_interp = interpolate.interp2d(xdat_pv,NS42_1.y,NS42_pvpdf_1.pdf[2,:-1,:-2])
-NS42_pvpdf_3_interp = interpolate.interp2d(xdat_pv,NS42_1.y,NS42_pvpdf_1.pdf[3,:-1,:-2])
-NS42_pvpdf_4_interp = interpolate.interp2d(xdat_pv,NS42_1.y,NS42_pvpdf_1.pdf[4,:-1,:-2])
-NS42_pvpdf_5_interp = interpolate.interp2d(xdat_pv,NS42_1.y,NS42_pvpdf_1.pdf[5,:-1,:-2])
-NS42_pvpdf_6_interp = interpolate.interp2d(xdat_pv,NS42_1.y,NS42_pvpdf_1.pdf[6,:-1,:-2])
-NS42_pvpdf_7_interp = interpolate.interp2d(xdat_pv,NS42_1.y,NS42_pvpdf_1.pdf[7,:-1,:-2])
-NS42_pvpdf_8_interp = interpolate.interp2d(xdat_pv,NS42_2.y,NS42_pvpdf_2.pdf[0,:-1,:-2])
-NS42_pvpdf_9_interp = interpolate.interp2d(xdat_pv,NS42_2.y,NS42_pvpdf_2.pdf[1,:-1,:-2])
-NS42_pvpdf_10_interp = interpolate.interp2d(xdat_pv,NS42_2.y,NS42_pvpdf_2.pdf[2,:-1,:-2])
-NS42_pvpdf_11_interp = interpolate.interp2d(xdat_pv,NS42_3.y,NS42_pvpdf_3.pdf[0,:-1,:-2])
-NS42_pvpdf_12_interp = interpolate.interp2d(xdat_pv,NS42_3.y,NS42_pvpdf_3.pdf[1,:-1,:-2])
-NS42_pvpdf_13_interp = interpolate.interp2d(xdat_pv,NS42_3.y,NS42_pvpdf_3.pdf[2,:-1,:-2])
-NS42_pvpdf_14_interp = interpolate.interp2d(xdat_pv,NS42_3.y,NS42_pvpdf_3.pdf[3,:-1,:-2])
-NS42_pvpdf_15_interp = interpolate.interp2d(xdat_pv,NS42_3.y,NS42_pvpdf_3.pdf[4,:-1,:-2])
+NS42_pvpdf_interp_1 = np.zeros((len(pvlist_1),NS42_1.y_len,NS42_pvpdf_1.nb))
+for n in range(len(pvlist_1)):
+    for j in range(NS42_1.y_len):
+        NS42_pvpdf_interp_1[n,j,:] = np.interp(NS42_pvpdf_interp_data_1.xy[0,0,j,:],NS42_pvpdf_1.xy[0,n,j,:],NS42_pvpdf_1.pdf[n,j,:-2])
 
-NS42_pvpdf_interp = np.array([NS42_pvpdf_0_interp(xdat_pv,NS42_1.y),NS42_pvpdf_1_interp(xdat_pv,NS42_1.y),NS42_pvpdf_2_interp(xdat_pv,NS42_1.y),NS42_pvpdf_3_interp(xdat_pv,NS42_1.y),NS42_pvpdf_4_interp(xdat_pv,NS42_1.y),NS42_pvpdf_5_interp(xdat_pv,NS42_1.y),NS42_pvpdf_6_interp(xdat_pv,NS42_1.y),NS42_pvpdf_7_interp(xdat_pv,NS42_1.y),NS42_pvpdf_8_interp(xdat_pv,NS42_1.y),NS42_pvpdf_9_interp(xdat_pv,NS42_1.y),NS42_pvpdf_10_interp(xdat_pv,NS42_1.y),NS42_pvpdf_11_interp(xdat_pv,NS42_1.y),NS42_pvpdf_12_interp(xdat_pv,NS42_1.y),NS42_pvpdf_13_interp(xdat_pv,NS42_1.y),NS42_pvpdf_14_interp(xdat_pv,NS42_1.y),NS42_pvpdf_15_interp(xdat_pv,NS42_1.y)])
+NS42_pvpdf_interp_2 = np.zeros((len(pvlist_2),NS42_2.y_len,NS42_pvpdf_2.nb))
+for n in range(len(pvlist_2)):
+    for j in range(NS42_2.y_len):
+        NS42_pvpdf_interp_2[n,j,:] = np.interp(NS42_pvpdf_interp_data_2.xy[0,0,j,:],NS42_pvpdf_2.xy[0,n,j,:],NS42_pvpdf_2.pdf[n,j,:-2])
 
-S20_pvpdf_0_interp = interpolate.interp2d(pvpdf_S20.xy[0,0,300,:],S20.y,pvpdf_S20.pdf[0,:-1,:-2])
-S20_pvpdf_1_interp = interpolate.interp2d(pvpdf_S20.xy[0,0,300,:],S20.y,pvpdf_S20.pdf[1,:-1,:-2])
-S20_pvpdf_2_interp = interpolate.interp2d(pvpdf_S20.xy[0,0,300,:],S20.y,pvpdf_S20.pdf[2,:-1,:-2])
-S20_pvpdf_3_interp = interpolate.interp2d(pvpdf_S20.xy[0,0,300,:],S20.y,pvpdf_S20.pdf[3,:-1,:-2])
-S20_pvpdf_4_interp = interpolate.interp2d(pvpdf_S20.xy[0,0,300,:],S20.y,pvpdf_S20.pdf[4,:-1,:-2])
-S20_pvpdf_5_interp = interpolate.interp2d(pvpdf_S20.xy[0,0,300,:],S20.y,pvpdf_S20.pdf[5,:-1,:-2])
-S20_pvpdf_6_interp = interpolate.interp2d(pvpdf_S20.xy[0,0,300,:],S20.y,pvpdf_S20.pdf[6,:-1,:-2])
-S20_pvpdf_7_interp = interpolate.interp2d(pvpdf_S20.xy[0,0,300,:],S20.y,pvpdf_S20.pdf[7,:-1,:-2])
-S20_pvpdf_8_interp = interpolate.interp2d(pvpdf_S20.xy[0,0,300,:],S20.y,pvpdf_S20.pdf[8,:-1,:-2])
-S20_pvpdf_9_interp = interpolate.interp2d(pvpdf_S20.xy[0,0,300,:],S20.y,pvpdf_S20.pdf[9,:-1,:-2])
-S20_pvpdf_10_interp = interpolate.interp2d(pvpdf_S20.xy[0,0,300,:],S20.y,pvpdf_S20.pdf[10,:-1,:-2])
+NS42_pvpdf_interp_3 = np.zeros((len(pvlist_3),NS42_3.y_len,NS42_pvpdf_3.nb))
+for n in range(len(pvlist_3)):
+    for j in range(NS42_3.y_len):
+        NS42_pvpdf_interp_3[n,j,:] = np.interp(NS42_pvpdf_interp_data_3.xy[0,0,j,:],NS42_pvpdf_3.xy[0,n,j,:],NS42_pvpdf_3.pdf[n,j,:-2])
 
-S20_pvpdf_interp = np.array([S20_pvpdf_0_interp(xdat_pv,S20.y),S20_pvpdf_1_interp(xdat_pv,S20.y),S20_pvpdf_2_interp(xdat_pv,S20.y),S20_pvpdf_3_interp(xdat_pv,S20.y),S20_pvpdf_4_interp(xdat_pv,S20.y),S20_pvpdf_5_interp(xdat_pv,S20.y),S20_pvpdf_6_interp(xdat_pv,S20.y),S20_pvpdf_7_interp(xdat_pv,S20.y),S20_pvpdf_8_interp(xdat_pv,S20.y),S20_pvpdf_9_interp(xdat_pv,S20.y),S20_pvpdf_10_interp(xdat_pv,S20.y)])
+NS42_pvpdf_interp = np.array([NS42_pvpdf_interp_1,NS42_pvpdf_interp_2,NS42_pvpdf_interp_3])
+
+S20_vortpdf_interp = np.zeros((len(vortlist_S20),S20.y_len,vortpdf_S20.nb))
+for n in range(len(vortlist_S20)):
+    for j in range(S20.y_len):
+        S20_vortpdf_interp[n,j,:] = np.interp(S20_vortpdf_interp_data.xy[0,0,j,:],vortpdf_S20.xy[0,n,j,:],vortpdf_S20.pdf[n,j,:-2])
+
+S20_pvpdf_interp = np.zeros((len(pvlist_S20),S20.y_len,pvpdf_S20.nb))
+for n in range(len(pvlist_S20)):
+    for j in range(S20.y_len):
+        S20_pvpdf_interp[n,j,:] = np.interp(S20_pvpdf_interp_data.xy[0,0,j,:],pvpdf_S20.xy[0,n,j,:],pvpdf_S20.pdf[n,j,:-2])
 
 # Running mean of pdfs
 

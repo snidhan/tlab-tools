@@ -62,10 +62,10 @@ S20_42_s1gradpdf = Pdfs([path_42+'3072x960x4608-S20/stats/pdfs/pdf66000.LnGradie
 
 # Create grid on which to interpolate pdfs
 
-NS42_vortpdf_interp_data = Pdfs([path_42+'2560x576x2560/stats/pdfs/pdf20500.LnEnstrophyW_iW_i'],path_42+'2560x576x2560/y.dat')
-NS42_pvpdf_interp_data = Pdfs([path_42+'2560x576x2560/stats/pdfs/pdf20500.LnPotentialEnstrophy'],path_42+'2560x576x2560/y.dat')
-S20_vortpdf_interp_data = Pdfs([path_42+'3072x960x4608-S20/stats/pdfs/pdf42000.LnEnstrophyW_iW_i'],path_42+'3072x960x4608-S20/y.dat')
-S20_pvpdf_interp_data = Pdfs([path_42+'3072x960x4608-S20/stats/pdfs/pdf42000.LnPotentialEnstrophy'],path_42+'3072x960x4608-S20/y.dat')
+NS42_vortpdf_interp_data = Pdfs([path_42+'2560x576x2560/stats/pdfs/pdf41500.LnEnstrophyW_iW_i'],path_42+'2560x576x2560/y.dat')
+NS42_pvpdf_interp_data = Pdfs([path_42+'2560x576x2560/stats/pdfs/pdf41500.LnPotentialEnstrophy'],path_42+'2560x576x2560/y.dat')
+S20_vortpdf_interp_data = Pdfs([path_42+'3072x960x4608-S20/stats/pdfs/pdf75000.LnEnstrophyW_iW_i'],path_42+'3072x960x4608-S20/y.dat')
+S20_pvpdf_interp_data = Pdfs([path_42+'3072x960x4608-S20/stats/pdfs/pdf75000.LnPotentialEnstrophy'],path_42+'3072x960x4608-S20/y.dat')
 
 
 # Interpolate pdfs
@@ -90,7 +90,7 @@ for n in range(3):
     for j in range(S20_42.y_len):
         S20_pvpdf_interp[n,j,:] = np.interp(S20_pvpdf_interp_data.xy[0,0,j,:],S20_42_pvpdf.xy[0,n,j,:],S20_42_pvpdf.pdf[n,j,:-2])
 
-# Running mean of pdfs
+# Mean of pdfs
 
 NS42_vortpdf_interp_runmean = np.mean(NS42_vortpdf_interp,axis=0)
 
@@ -509,7 +509,7 @@ ax2.set_xlim(-7,2)
 ax1.set_ylim(0,1.6)
 ax1.set_yticks([0,0.25,0.5,0.75,1,1.25,1.5])
 ax2.set_xticks([-6,-4,-2,0,2])
-cs1 = ax1.contourf(NS42_vortpdf_x_mean,NS42_vortpdf_y_mean,NS42_vortpdf_interp_runmean,cmap=imola_map)
+cs1 = ax1.contourf(NS42_vortpdf_x_mean,NS42_vortpdf_y_mean,NS42_vortpdf_interp_runmean,cmap=imola_map,levels=np.linspace(0,0.4,9))
 ax1.plot(maxvort_NS42,NS42.y/np.mean(NS42.z_enc),'k',lw=1)
 ax1.scatter(maxvort_NS42_saddle_avg,y_vort_NS42_saddle_avg,100,color='k',marker='*')
 ax1.axhline(np.mean(NS42.z_ig/NS42.z_enc),0,0.05,color='k',linewidth=2)
@@ -546,7 +546,7 @@ plt.colorbar(cs2,ax=ax2)
 plt.colorbar(cs3,ax=ax3)
 plt.colorbar(cs4,ax=ax4)
 plt.tight_layout()
-#plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_timeavg_interp.pdf')
+plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_timeavg_interp_grid20.pdf')
 plt.show()
 
 
