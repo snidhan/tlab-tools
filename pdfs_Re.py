@@ -197,6 +197,18 @@ maxpv_S20 = np.log10(np.exp(maxpv_S20)/(cb*ceps*(np.mean(S20_42.z_enc)/L0)**(-4.
 #     maxpv_S20_42[i] = S20_42_pvpdf.xy[0,it,i,np.argmax(S20_42_pvpdf.pdf[it,i,:S20_42_pvpdf.nb])]
 #     maxprob_pv_S20_42[i] = np.max(S20_42_pvpdf.pdf[it,i,:S20_42_pvpdf.nb])
 # maxpv_S20_42 = np.log10(np.exp(maxpv_S20_42)/(cb*ceps*(S20_42.z_enc[it]/L0)**(-4./3.)*(B0/nu_42)**3/42))
+
+# Find jump in maxvort/maxpv
+
+for i in range(S20_42.y_len):
+    if np.abs(maxvort_S20[i+1])-np.abs(maxvort_S20[i]) > 1:
+        maxit_vort_S20 = i+1
+        break
+
+for i in range(S20_42.y_len):
+    if np.abs(maxpv_S20[i+1])-np.abs(maxpv_S20[i]) > 1:
+        maxit_pv_S20 = i+1
+        break
     
 # Find saddle as point where maxprob has a minimum
 
@@ -491,14 +503,16 @@ ax2.axhline(np.mean(NS42.z_ig/NS42.z_enc),0,0.05,color='k',linewidth=2)
 ax2.axhline(np.mean(NS42.z_is/NS42.z_enc),0,0.05,color='k',linewidth=2)
 ax2.axhline(np.mean(NS42.z_if/NS42.z_enc),0,0.05,color='k',linewidth=2)
 cs3 = ax3.contourf(S20_42_vortpdf_x_mean,S20_42_vortpdf_y_mean,S20_vortpdf_interp_runmean,cmap=imola_map,levels=np.linspace(0,0.4,9))
-ax3.plot(maxvort_S20,S20_42.y/np.mean(S20_42.z_enc),'k',lw=1)
-ax3.scatter(maxvort_S20_saddle_avg,y_vort_S20_saddle_avg,100,color='k',marker='*')
+ax3.plot(maxvort_S20[:maxit_vort_S20],S20_42.y[:maxit_vort_S20]/np.mean(S20_42.z_enc),'k',lw=1)
+ax3.plot(maxvort_S20[maxit_vort_S20:],S20_42.y[maxit_vort_S20:]/np.mean(S20_42.z_enc),'k',lw=1)
+ax3.scatter((maxvort_S20[maxit_vort_S20-1]+maxvort_S20[maxit_vort_S20])/2,S20_42.y[maxit_vort_S20]/np.mean(S20_42.z_enc),100,color='k',marker='*')
 ax3.axhline(np.mean(S20_42.z_ig/S20_42.z_enc),0,0.05,color='k',linewidth=2)
 ax3.axhline(np.mean(S20_42.z_is/S20_42.z_enc),0,0.05,color='k',linewidth=2)
 ax3.axhline(np.mean(S20_42.z_if/S20_42.z_enc),0,0.05,color='k',linewidth=2)
 cs4 = ax4.contourf(S20_42_pvpdf_x_mean,S20_42_pvpdf_y_mean,S20_pvpdf_interp_runmean,cmap=imola_map,levels=np.linspace(0,0.24,9))
-ax4.plot(maxpv_S20,S20_42.y/np.mean(S20_42.z_enc),'k',lw=1)
-ax4.scatter(maxpv_S20_saddle_avg,y_pv_S20_saddle_avg,100,color='k',marker='*')
+ax4.plot(maxpv_S20[:maxit_pv_S20],S20_42.y[:maxit_pv_S20]/np.mean(S20_42.z_enc),'k',lw=1)
+ax4.plot(maxpv_S20[maxit_pv_S20:],S20_42.y[maxit_pv_S20:]/np.mean(S20_42.z_enc),'k',lw=1)
+ax4.scatter((maxpv_S20[maxit_pv_S20-1]+maxpv_S20[maxit_pv_S20])/2,S20_42.y[maxit_pv_S20]/np.mean(S20_42.z_enc),100,color='k',marker='*')
 ax4.axhline(np.mean(S20_42.z_ig/S20_42.z_enc),0,0.05,color='k',linewidth=2)
 ax4.axhline(np.mean(S20_42.z_is/S20_42.z_enc),0,0.05,color='k',linewidth=2)
 ax4.axhline(np.mean(S20_42.z_if/S20_42.z_enc),0,0.05,color='k',linewidth=2)
@@ -515,7 +529,7 @@ plt.colorbar(cs2,ax=ax2)
 plt.colorbar(cs3,ax=ax3)
 plt.colorbar(cs4,ax=ax4)
 plt.tight_layout()
-plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_timeavg_interpxy.pdf')
+#plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_timeavg_interpxy.pdf')
 plt.show()
 
 

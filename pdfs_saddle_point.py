@@ -209,7 +209,30 @@ for t in range(0,np.ma.size(S20_pvpdf_interp_runmean,0)):
         maxpv_S20[t,j] = S20_pvpdf_interp_data.xy[0,0,j,np.argmax(S20_pvpdf_interp_runmean[t,j,:])]
         maxprob_pv_S20[t,j] = np.max(S20_pvpdf_interp_runmean[t,j,:])
     maxpv_S20[t,:] = np.log10(np.exp(maxpv_S20[t,:])/(cb*ceps*(S20.z_enc[t+1]/L_0)**(-4./3.)*(B0/nu)**3/42))
-         
+
+# Find jump in maxvort/maxpv
+
+maxit_vort_S20 = np.zeros(np.ma.size(S20_vortpdf_interp_runmean,0))
+y_maxit_vort_S20 = np.zeros(np.ma.size(S20_vortpdf_interp_runmean,0))
+maxvort_it_S20 = np.zeros(np.ma.size(S20_vortpdf_interp_runmean,0))
+for t in range(0,np.ma.size(S20_vortpdf_interp_runmean,0)):
+    for j in range(0,S20.y_len):
+        if np.abs(maxvort_S20[t,j+1])-np.abs(maxvort_S20[t,j]) > 0.5:
+            maxit_vort_S20[t] = j+1
+            break
+    y_maxit_vort_S20[t] = S20.y[int(maxit_vort_S20[t])]/S20.z_enc[t+1]
+    maxvort_it_S20[t] = (maxvort_S20[t,int(maxit_vort_S20[t]-1)]+maxvort_S20[t,int(maxit_vort_S20[t])])/2
+
+maxit_pv_S20 = np.zeros(np.ma.size(S20_pvpdf_interp_runmean,0))
+y_maxit_pv_S20 = np.zeros(np.ma.size(S20_pvpdf_interp_runmean,0))
+maxpv_it_S20 = np.zeros(np.ma.size(S20_pvpdf_interp_runmean,0))
+for t in range(0,np.ma.size(S20_pvpdf_interp_runmean,0)):
+    for j in range(0,S20.y_len):
+        if np.abs(maxpv_S20[t,j+1])-np.abs(maxpv_S20[t,j]) > 1:
+            maxit_pv_S20[t] = j+1
+            break
+    y_maxit_pv_S20[t] = S20.y[int(maxit_pv_S20[t])]/S20.z_enc[t+1]
+    maxpv_it_S20[t] = (maxpv_S20[t,int(maxit_pv_S20[t]-1)]+maxpv_S20[t,int(maxit_pv_S20[t])])/2
 
 # Find saddle as point where maxprob has a minimum
 
@@ -265,19 +288,19 @@ ax2.set_ylim(-5.5,0.5)
 ax2.set_xlim(15,30)
 ax1.plot(time[1:-1],y_vort_NS42_saddle,c=blues(0.5))
 ax1.plot(time[1:-1],y_pv_NS42_saddle,c=oranges(0.5))
-ax1.plot(S20.z_enc[1:-1]/L_0,y_vort_S20_saddle,c=blues(0.7))
-ax1.plot(S20.z_enc[1:-1]/L_0,y_pv_S20_saddle,c=oranges(0.7))
-ax1.plot(S20.z_enc[1:-1]/L_0,runningmean(S20.z_ig/S20.z_enc,1),c=greys(0.7),ls='--',label=r'$z_{i,g}/z_\mathrm{enc}$')
+ax1.plot(S20.z_enc[1:-1]/L_0,y_maxit_vort_S20,c=blues(0.8))
+ax1.plot(S20.z_enc[1:-1]/L_0,y_maxit_pv_S20,c=oranges(0.8))
+ax1.plot(S20.z_enc[1:-1]/L_0,runningmean(S20.z_ig/S20.z_enc,1),c=greys(0.8),ls='--',label=r'$z_{i,g}/z_\mathrm{enc}$')
 ax1.plot(time[1:-1],runningmean(z_is,1),c=greys(.5),ls='-.',label=r'$z_{i,s}/z_\mathrm{enc}$')
 ax1.plot(time[1:-1],runningmean(z_if,1),c=greys(.5),ls=':',label=r'$z_{i,f}/z_\mathrm{enc}$')
 ax2.plot(time[1:-1],maxvort_NS42_saddle,c=blues(0.5))
 ax2.plot(time[1:-1],maxpv_NS42_saddle,c=oranges(0.5))
-ax2.plot(S20.z_enc[1:-1]/L_0,maxvort_S20_saddle,c=blues(0.7))
-ax2.plot(S20.z_enc[1:-1]/L_0,maxpv_S20_saddle,c=oranges(0.7))
+ax2.plot(S20.z_enc[1:-1]/L_0,maxvort_it_S20,c=blues(0.8))
+ax2.plot(S20.z_enc[1:-1]/L_0,maxpv_it_S20,c=oranges(0.8))
 ax1.text(16,1.05,r'$Fr_0=0$, $\mathrm{log}_{10}(\omega^2/\omega_0^2)$',color=blues(0.5),fontsize=20)
 ax1.text(16,1.01,r'$Fr_0=0$, $\mathrm{log}_{10}(\Pi^2/\Pi_0^2)$',color=oranges(0.5),fontsize=20)
-ax2.text(16,-4.7,r'$Fr_0=20$, $\mathrm{log}_{10}(\omega^2/\omega_0^2)$',color=blues(0.7),fontsize=20)
-ax2.text(16,-5.3,r'$Fr_0=20$, $\mathrm{log}_{10}(\Pi^2/\Pi_0^2)$',color=oranges(0.7),fontsize=20)
+ax2.text(16,-4.7,r'$Fr_0=20$, $\mathrm{log}_{10}(\omega^2/\omega_0^2)$',color=blues(0.8),fontsize=20)
+ax2.text(16,-5.3,r'$Fr_0=20$, $\mathrm{log}_{10}(\Pi^2/\Pi_0^2)$',color=oranges(0.8),fontsize=20)
 ax1.set_xlabel(r'$z_\mathrm{enc}/L_0$')
 ax2.set_xlabel(r'$z_\mathrm{enc}/L_0$')
 ax1.set_ylabel(r'$z_\mathrm{saddle}/z_\mathrm{enc}$')
@@ -285,7 +308,7 @@ ax1.set_title('(a)',fontsize=20,loc='left')
 ax2.set_title('(b)',fontsize=20,loc='left')
 ax1.legend(loc='best',fontsize=20)
 plt.tight_layout()
-plt.savefig(opath+'pdfs_saddle_height_time_S20_S0_interpxy.pdf')
+#plt.savefig(opath+'pdfs_saddle_height_time_S20_S0_interpxy.pdf')
 plt.show()
 
 #Presentations
