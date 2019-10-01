@@ -212,6 +212,28 @@ for t in range(0,np.ma.size(S20_pvpdf_interp_runmean,0)):
 
 # Find jump in maxvort/maxpv
 
+maxit_vort_NS42 = np.zeros(np.ma.size(NS42_vortpdf_interp_runmean,0))
+y_maxit_vort_NS42 = np.zeros(np.ma.size(NS42_vortpdf_interp_runmean,0))
+maxvort_it_NS42 = np.zeros(np.ma.size(NS42_vortpdf_interp_runmean,0))
+for t in range(0,np.ma.size(NS42_vortpdf_interp_runmean,0)):
+    for j in range(0,NS42_3.y_len):
+        if np.abs(maxvort_NS42[t,j+1])-np.abs(maxvort_NS42[t,j]) > 0.2:
+            maxit_vort_NS42[t] = j+1
+            break
+    y_maxit_vort_NS42[t] = NS42_3.y[int(maxit_vort_NS42[t])]/z_enc_NS42[t+1]
+    maxvort_it_NS42[t] = (maxvort_NS42[t,int(maxit_vort_NS42[t]-1)]+maxvort_NS42[t,int(maxit_vort_NS42[t])])/2
+
+maxit_pv_NS42 = np.zeros(np.ma.size(NS42_pvpdf_interp_runmean,0))
+y_maxit_pv_NS42 = np.zeros(np.ma.size(NS42_pvpdf_interp_runmean,0))
+maxpv_it_NS42 = np.zeros(np.ma.size(NS42_pvpdf_interp_runmean,0))
+for t in range(0,np.ma.size(NS42_pvpdf_interp_runmean,0)):
+    for j in range(NS42_1.z_enc_arg[1],NS42_3.y_len):
+        if np.abs(maxpv_NS42[t,j+1])-np.abs(maxpv_NS42[t,j]) > 0.2:
+            maxit_pv_NS42[t] = j+1
+            break
+    y_maxit_pv_NS42[t] = NS42_3.y[int(maxit_pv_NS42[t])]/z_enc_NS42[t+1]
+    maxpv_it_NS42[t] = (maxpv_NS42[t,int(maxit_pv_NS42[t]-1)]+maxpv_NS42[t,int(maxit_pv_NS42[t])])/2
+
 maxit_vort_S20 = np.zeros(np.ma.size(S20_vortpdf_interp_runmean,0))
 y_maxit_vort_S20 = np.zeros(np.ma.size(S20_vortpdf_interp_runmean,0))
 maxvort_it_S20 = np.zeros(np.ma.size(S20_vortpdf_interp_runmean,0))
@@ -279,36 +301,36 @@ blues = matplotlib.cm.get_cmap('Blues')
 oranges = matplotlib.cm.get_cmap('Oranges')
 greys = matplotlib.cm.get_cmap('Greys')
 
-f, (ax1,ax2) = plt.subplots(1,2,sharex='all',figsize=(10,5))
+f, (ax1,ax2) = plt.subplots(1,2,figsize=(10,5))
 ax1.grid(True)
 ax2.grid(True)
-ax1.set_ylim(1,1.4)
+ax1.set_ylim(1,1.5)
 ax1.set_xlim(15,30)
-ax2.set_ylim(-5.5,0.5)
+ax2.set_ylim(-4,0)
 ax2.set_xlim(15,30)
-ax1.plot(time[1:-1],y_vort_NS42_saddle,c=blues(0.5))
-ax1.plot(time[1:-1],y_pv_NS42_saddle,c=oranges(0.5))
-ax1.plot(S20.z_enc[1:-1]/L_0,y_maxit_vort_S20,c=blues(0.8))
-ax1.plot(S20.z_enc[1:-1]/L_0,y_maxit_pv_S20,c=oranges(0.8))
-ax1.plot(S20.z_enc[1:-1]/L_0,runningmean(S20.z_ig/S20.z_enc,1),c=greys(0.8),ls='--',label=r'$z_{i,g}/z_\mathrm{enc}$')
+ax1.plot(time[1:-1],y_maxit_vort_NS42,c=blues(0.5))
+ax1.plot(time[1:-1],y_maxit_pv_NS42,c=oranges(0.5))
+ax1.plot(S20.z_enc[1:-1]/L_0,y_maxit_vort_S20,c=blues(0.9))
+ax1.plot(S20.z_enc[1:-1]/L_0,y_maxit_pv_S20,c=oranges(0.9))
+ax1.plot(S20.z_enc[1:-1]/L_0,runningmean(S20.z_ig/S20.z_enc,1),c=greys(0.9),ls='--',label=r'$z_{i,g}/z_\mathrm{enc}$')
 ax1.plot(time[1:-1],runningmean(z_is,1),c=greys(.5),ls='-.',label=r'$z_{i,s}/z_\mathrm{enc}$')
 ax1.plot(time[1:-1],runningmean(z_if,1),c=greys(.5),ls=':',label=r'$z_{i,f}/z_\mathrm{enc}$')
-ax2.plot(time[1:-1],maxvort_NS42_saddle,c=blues(0.5))
-ax2.plot(time[1:-1],maxpv_NS42_saddle,c=oranges(0.5))
-ax2.plot(S20.z_enc[1:-1]/L_0,maxvort_it_S20,c=blues(0.8))
-ax2.plot(S20.z_enc[1:-1]/L_0,maxpv_it_S20,c=oranges(0.8))
-ax1.text(16,1.05,r'$Fr_0=0$, $\mathrm{log}_{10}(\omega^2/\omega_0^2)$',color=blues(0.5),fontsize=20)
-ax1.text(16,1.01,r'$Fr_0=0$, $\mathrm{log}_{10}(\Pi^2/\Pi_0^2)$',color=oranges(0.5),fontsize=20)
-ax2.text(16,-4.7,r'$Fr_0=20$, $\mathrm{log}_{10}(\omega^2/\omega_0^2)$',color=blues(0.8),fontsize=20)
-ax2.text(16,-5.3,r'$Fr_0=20$, $\mathrm{log}_{10}(\Pi^2/\Pi_0^2)$',color=oranges(0.8),fontsize=20)
+ax2.plot(time[1:-1],maxvort_it_NS42,c=blues(0.5))
+ax2.plot(time[1:-1],maxpv_it_NS42,c=oranges(0.5))
+ax2.plot(S20.z_enc[1:-1]/L_0,maxvort_it_S20,c=blues(0.9))
+ax2.plot(S20.z_enc[1:-1]/L_0,maxpv_it_S20,c=oranges(0.9))
+ax2.text(22,-3.4,r'$\mathrm{log}_{10}(\omega^2/\omega_0^2)$',color=blues(0.7),fontsize=20)
+ax2.text(22,-3.9,r'$\mathrm{log}_{10}(\Pi^2/\Pi_0^2)$',color=oranges(0.7),fontsize=20)
+ax2.text(16,-3.4,r'$Fr_0=0$',color=greys(0.5),fontsize=20)
+ax2.text(16,-3.9,r'$Fr_0=20$',color=greys(0.9),fontsize=20)
 ax1.set_xlabel(r'$z_\mathrm{enc}/L_0$')
 ax2.set_xlabel(r'$z_\mathrm{enc}/L_0$')
 ax1.set_ylabel(r'$z_\mathrm{saddle}/z_\mathrm{enc}$')
 ax1.set_title('(a)',fontsize=20,loc='left')
 ax2.set_title('(b)',fontsize=20,loc='left')
-ax1.legend(loc='best',fontsize=20)
+ax1.legend(loc='best',fontsize=20,borderaxespad=0.1,handlelength=1.2,ncol=2,columnspacing=1.5)
 plt.tight_layout()
-#plt.savefig(opath+'pdfs_saddle_height_time_S20_S0_interpxy.pdf')
+plt.savefig(opath+'pdfs_saddle_height_time_S20_S0_interpxy.pdf')
 plt.show()
 
 #Presentations

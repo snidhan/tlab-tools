@@ -200,6 +200,16 @@ maxpv_S20 = np.log10(np.exp(maxpv_S20)/(cb*ceps*(np.mean(S20_42.z_enc)/L0)**(-4.
 
 # Find jump in maxvort/maxpv
 
+for i in range(NS42_3.y_len):
+    if np.abs(maxvort_NS42[i+1])-np.abs(maxvort_NS42[i]) > 0.2:
+        maxit_vort_NS42 = i+1
+        break
+
+for i in range(NS42.z_enc_arg[0],NS42_3.y_len):
+    if np.abs(maxpv_NS42[i+1])-np.abs(maxpv_NS42[i]) > 0.2:
+        maxit_pv_NS42 = i+1
+        break
+  
 for i in range(S20_42.y_len):
     if np.abs(maxvort_S20[i+1])-np.abs(maxvort_S20[i]) > 1:
         maxit_vort_S20 = i+1
@@ -491,14 +501,16 @@ ax1.set_ylim(0,1.6)
 ax1.set_yticks([0,0.25,0.5,0.75,1,1.25,1.5])
 ax2.set_xticks([-6,-4,-2,0,2])
 cs1 = ax1.contourf(NS42_vortpdf_x_mean,NS42_vortpdf_y_mean,NS42_vortpdf_interp_runmean,cmap=imola_map,levels=np.linspace(0,0.4,9))
-ax1.plot(maxvort_NS42,NS42_3.y/np.mean(NS42.z_enc),'k',lw=1)
-ax1.scatter(maxvort_NS42_saddle_avg,y_vort_NS42_saddle_avg,100,color='k',marker='*')
+ax1.plot(maxvort_NS42[:maxit_vort_NS42],NS42_3.y[:maxit_vort_NS42]/np.mean(NS42.z_enc),'k',lw=1)
+ax1.plot(maxvort_NS42[maxit_vort_NS42:],NS42_3.y[maxit_vort_NS42:]/np.mean(NS42.z_enc),'k',lw=1)
+ax1.scatter((maxvort_NS42[maxit_vort_NS42-1]+maxvort_NS42[maxit_vort_NS42])/2,NS42_3.y[maxit_vort_NS42]/np.mean(NS42.z_enc),100,color='k',marker='*')
 ax1.axhline(np.mean(NS42.z_ig/NS42.z_enc),0,0.05,color='k',linewidth=2)
 ax1.axhline(np.mean(NS42.z_is/NS42.z_enc),0,0.05,color='k',linewidth=2)
 ax1.axhline(np.mean(NS42.z_if/NS42.z_enc),0,0.05,color='k',linewidth=2)
 cs2 = ax2.contourf(NS42_pvpdf_x_mean,NS42_pvpdf_y_mean,NS42_pvpdf_interp_runmean,cmap=imola_map,levels=np.linspace(0,0.24,9))
-ax2.plot(maxpv_NS42,NS42_3.y/np.mean(NS42.z_enc),'k',lw=1)
-ax2.scatter(maxpv_NS42_saddle_avg,y_pv_NS42_saddle_avg,100,color='k',marker='*')
+ax2.plot(maxpv_NS42[:maxit_pv_NS42],NS42_3.y[:maxit_pv_NS42]/np.mean(NS42.z_enc),'k',lw=1)
+ax2.plot(maxpv_NS42[maxit_pv_NS42:],NS42_3.y[maxit_pv_NS42:]/np.mean(NS42.z_enc),'k',lw=1)
+ax2.scatter((maxpv_NS42[maxit_pv_NS42-1]+maxpv_NS42[maxit_pv_NS42])/2,NS42_3.y[maxit_pv_NS42]/np.mean(NS42.z_enc),100,color='k',marker='*')
 ax2.axhline(np.mean(NS42.z_ig/NS42.z_enc),0,0.05,color='k',linewidth=2)
 ax2.axhline(np.mean(NS42.z_is/NS42.z_enc),0,0.05,color='k',linewidth=2)
 ax2.axhline(np.mean(NS42.z_if/NS42.z_enc),0,0.05,color='k',linewidth=2)
@@ -529,7 +541,7 @@ plt.colorbar(cs2,ax=ax2)
 plt.colorbar(cs3,ax=ax3)
 plt.colorbar(cs4,ax=ax4)
 plt.tight_layout()
-#plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_timeavg_interpxy.pdf')
+plt.savefig(opath_42+'pdfs_vort_pv_subplots_S20_S0_timeavg_interpxy.pdf')
 plt.show()
 
 
