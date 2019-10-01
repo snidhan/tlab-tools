@@ -141,33 +141,20 @@ for i in range(0,NS42_3.y_len):
     maxprob_pv_NS42[i] = np.max(NS42_pvpdf_interp_runmean[i,:])
 maxpv_NS42 = np.log10(np.exp(maxpv_NS42)/(cb*ceps*(np.mean(NS42.z_enc)/L0)**(-4./3.)*(B0/nu_42)**3/42))
 
-# maxvort_42_avg = np.zeros(NS42_vortpdf.ny)
-# maxprob_vort_42_avg = np.zeros(NS42_vortpdf.ny)
-# for i in range(0,NS42_vortpdf.ny):
-#     maxvort_42_avg[i] = NS42_vortpdf.xy[0,0,i,np.argmax(NS42_vortpdf.pdf_timeavg[i,:NS42_vortpdf.nb])]
-#     maxprob_vort_42_avg[i] = np.max(NS42_vortpdf.pdf_timeavg[i,:NS42_vortpdf.nb])
-# maxvort_42_avg = np.log10(np.exp(maxvort_42_avg)/(ceps*B0/nu_42))
-    
-# maxpv_42_avg = np.zeros(NS42_pvpdf.ny)
-# maxprob_pv_42_avg = np.zeros(NS42_pvpdf.ny)
-# for i in range(0,NS42_pvpdf.ny):
-#     maxpv_42_avg[i] = NS42_pvpdf.xy[0,0,i,np.argmax(NS42_pvpdf.pdf_timeavg[i,:NS42_pvpdf.nb])]
-#     maxprob_pv_42_avg[i] = np.max(NS42_pvpdf.pdf_timeavg[i,:NS42_pvpdf.nb])
-# maxpv_42_avg = np.log10(np.exp(maxpv_42_avg)/(cb*ceps*(np.mean(NS42.z_enc)/L0)**(-4./3.)*(B0/nu_42)**3/42))
 
-maxvort_42 = np.zeros(NS42_vortpdf.ny)
-maxprob_vort_42 = np.zeros(NS42_vortpdf.ny)
-for i in range(0,NS42_vortpdf.ny):
-    maxvort_42[i] = NS42_vortpdf.xy[0,it,i,np.argmax(NS42_vortpdf.pdf[it,i,:NS42_vortpdf.nb])]
-    maxprob_vort_42[i] = np.max(NS42_vortpdf.pdf[it,i,:NS42_vortpdf.nb])
-maxvort_42 = np.log10(np.exp(maxvort_42)/(ceps*B0/nu_42))
+# maxvort_42 = np.zeros(NS42_vortpdf.ny)
+# maxprob_vort_42 = np.zeros(NS42_vortpdf.ny)
+# for i in range(0,NS42_vortpdf.ny):
+#     maxvort_42[i] = NS42_vortpdf.xy[0,it,i,np.argmax(NS42_vortpdf.pdf[it,i,:NS42_vortpdf.nb])]
+#     maxprob_vort_42[i] = np.max(NS42_vortpdf.pdf[it,i,:NS42_vortpdf.nb])
+# maxvort_42 = np.log10(np.exp(maxvort_42)/(ceps*B0/nu_42))
     
-maxpv_42 = np.zeros(NS42_pvpdf.ny)
-maxprob_pv_42 = np.zeros(NS42_pvpdf.ny)
-for i in range(0,NS42_pvpdf.ny):
-    maxpv_42[i] = NS42_pvpdf.xy[0,it,i,np.argmax(NS42_pvpdf.pdf[it,i,:NS42_pvpdf.nb])]
-    maxprob_pv_42[i] = np.max(NS42_pvpdf.pdf[it,i,:NS42_pvpdf.nb])
-maxpv_42 = np.log10(np.exp(maxpv_42)/(cb*ceps*(NS42.z_enc[it]/L0)**(-4./3.)*(B0/nu_42)**3/42))
+# maxpv_42 = np.zeros(NS42_pvpdf.ny)
+# maxprob_pv_42 = np.zeros(NS42_pvpdf.ny)
+# for i in range(0,NS42_pvpdf.ny):
+#     maxpv_42[i] = NS42_pvpdf.xy[0,it,i,np.argmax(NS42_pvpdf.pdf[it,i,:NS42_pvpdf.nb])]
+#     maxprob_pv_42[i] = np.max(NS42_pvpdf.pdf[it,i,:NS42_pvpdf.nb])
+# maxpv_42 = np.log10(np.exp(maxpv_42)/(cb*ceps*(NS42.z_enc[it]/L0)**(-4./3.)*(B0/nu_42)**3/42))
     
 maxvort_25 = np.zeros(NS25_vortpdf.ny)
 maxprob_vort_25 = np.zeros(NS25_vortpdf.ny)
@@ -197,34 +184,19 @@ for i in range(0,S20_42.y_len):
     maxprob_pv_S20[i] = np.max(S20_pvpdf_interp_runmean[i,:])
 maxpv_S20 = np.log10(np.exp(maxpv_S20)/(cb*ceps*(np.mean(S20_42.z_enc)/L0)**(-4./3.)*(B0/nu_42)**3/42))
 
-
-# maxvort_S20_42_avg = np.zeros(S20_42_vortpdf.ny)
-# maxprob_vort_S20_42_avg = np.zeros(S20_42_vortpdf.ny)
+# maxvort_S20_42 = np.zeros(S20_42_vortpdf.ny)
+# maxprob_vort_S20_42 = np.zeros(S20_42_vortpdf.ny)
 # for i in range(0,S20_42_vortpdf.ny):
-#     maxvort_S20_42_avg[i] = S20_42_vortpdf.xy[0,0,i,np.argmax(S20_42_vortpdf.pdf_timeavg[i,:S20_42_vortpdf.nb])]
-#     maxprob_vort_S20_42_avg[i] = np.max(S20_42_vortpdf.pdf_timeavg[i,:S20_42_vortpdf.nb])
-# maxvort_S20_42_avg = np.log10(np.exp(maxvort_S20_42_avg)/(ceps*B0/nu_42))
+#     maxvort_S20_42[i] = S20_42_vortpdf.xy[0,it,i,np.argmax(S20_42_vortpdf.pdf[it,i,:S20_42_vortpdf.nb])]
+#     maxprob_vort_S20_42[i] = np.max(S20_42_vortpdf.pdf[it,i,:S20_42_vortpdf.nb])
+# maxvort_S20_42 = np.log10(np.exp(maxvort_S20_42)/(ceps*B0/nu_42))
 
-# maxpv_S20_42_avg = np.zeros(S20_42_pvpdf.ny)
-# maxprob_pv_S20_42_avg = np.zeros(S20_42_pvpdf.ny)
+# maxpv_S20_42 = np.zeros(S20_42_pvpdf.ny)
+# maxprob_pv_S20_42 = np.zeros(S20_42_pvpdf.ny)
 # for i in range(0,S20_42_pvpdf.ny):
-#     maxpv_S20_42_avg[i] = S20_42_pvpdf.xy[0,0,i,np.argmax(S20_42_pvpdf.pdf_timeavg[i,:S20_42_pvpdf.nb])]
-#     maxprob_pv_S20_42_avg[i] = np.max(S20_42_pvpdf.pdf_timeavg[i,:S20_42_pvpdf.nb])
-# maxpv_S20_42_avg = np.log10(np.exp(maxpv_S20_42_avg)/(cb*ceps*(np.mean(S20_42.z_enc)/L0)**(-4./3.)*(B0/nu_42)**3/42))
-
-maxvort_S20_42 = np.zeros(S20_42_vortpdf.ny)
-maxprob_vort_S20_42 = np.zeros(S20_42_vortpdf.ny)
-for i in range(0,S20_42_vortpdf.ny):
-    maxvort_S20_42[i] = S20_42_vortpdf.xy[0,it,i,np.argmax(S20_42_vortpdf.pdf[it,i,:S20_42_vortpdf.nb])]
-    maxprob_vort_S20_42[i] = np.max(S20_42_vortpdf.pdf[it,i,:S20_42_vortpdf.nb])
-maxvort_S20_42 = np.log10(np.exp(maxvort_S20_42)/(ceps*B0/nu_42))
-
-maxpv_S20_42 = np.zeros(S20_42_pvpdf.ny)
-maxprob_pv_S20_42 = np.zeros(S20_42_pvpdf.ny)
-for i in range(0,S20_42_pvpdf.ny):
-    maxpv_S20_42[i] = S20_42_pvpdf.xy[0,it,i,np.argmax(S20_42_pvpdf.pdf[it,i,:S20_42_pvpdf.nb])]
-    maxprob_pv_S20_42[i] = np.max(S20_42_pvpdf.pdf[it,i,:S20_42_pvpdf.nb])
-maxpv_S20_42 = np.log10(np.exp(maxpv_S20_42)/(cb*ceps*(S20_42.z_enc[it]/L0)**(-4./3.)*(B0/nu_42)**3/42))
+#     maxpv_S20_42[i] = S20_42_pvpdf.xy[0,it,i,np.argmax(S20_42_pvpdf.pdf[it,i,:S20_42_pvpdf.nb])]
+#     maxprob_pv_S20_42[i] = np.max(S20_42_pvpdf.pdf[it,i,:S20_42_pvpdf.nb])
+# maxpv_S20_42 = np.log10(np.exp(maxpv_S20_42)/(cb*ceps*(S20_42.z_enc[it]/L0)**(-4./3.)*(B0/nu_42)**3/42))
     
 # Find saddle as point where maxprob has a minimum
 
@@ -245,21 +217,14 @@ y_pv_NS42_saddle_avg = NS42_3.y[np.argmin(maxprob_pv_NS42[NS42.z_enc_arg[0]:])+N
 maxpv_NS42_saddle_avg = maxpv_NS42[np.argmin(np.abs(y_pv_NS42_saddle_avg-NS42_3.y))]
 y_pv_NS42_saddle_avg = y_pv_NS42_saddle_avg/np.mean(NS42.z_enc)
 
-# y_vort_42_saddle_avg = NS42.y[np.argmin(maxprob_vort_42_avg)]
-# maxvort_42_saddle_avg = maxvort_42_avg[np.argmin(np.abs(y_vort_42_saddle_avg-NS42.y))]
-# y_vort_42_saddle_avg = y_vort_42_saddle_avg/np.mean(NS42.z_enc)
 
-# y_pv_42_saddle_avg = NS42.y[np.argmin(maxprob_pv_42_avg[NS42.z_enc_arg[0]:])+NS42.z_enc_arg[0]]
-# maxpv_42_saddle_avg = maxpv_42_avg[np.argmin(np.abs(y_pv_42_saddle_avg-NS42.y))]
-# y_pv_42_saddle_avg = y_pv_42_saddle_avg/np.mean(NS42.z_enc)
+# y_vort_42_saddle = NS42.y[np.argmin(maxprob_vort_42)]
+# maxvort_42_saddle = maxvort_42[np.argmin(np.abs(y_vort_42_saddle-NS42.y))]
+# y_vort_42_saddle = y_vort_42_saddle/NS42.z_enc[it]
 
-y_vort_42_saddle = NS42.y[np.argmin(maxprob_vort_42)]
-maxvort_42_saddle = maxvort_42[np.argmin(np.abs(y_vort_42_saddle-NS42.y))]
-y_vort_42_saddle = y_vort_42_saddle/NS42.z_enc[it]
-
-y_pv_42_saddle = NS42.y[np.argmin(maxprob_pv_42[NS42.z_enc_arg[0]:])+NS42.z_enc_arg[0]]
-maxpv_42_saddle = maxpv_42[np.argmin(np.abs(y_pv_42_saddle-NS42.y))]
-y_pv_42_saddle = y_pv_42_saddle/NS42.z_enc[it]
+# y_pv_42_saddle = NS42.y[np.argmin(maxprob_pv_42[NS42.z_enc_arg[0]:])+NS42.z_enc_arg[0]]
+# maxpv_42_saddle = maxpv_42[np.argmin(np.abs(y_pv_42_saddle-NS42.y))]
+# y_pv_42_saddle = y_pv_42_saddle/NS42.z_enc[it]
 
 y_vort_25_saddle = NS25.y[np.argmin(maxprob_vort_25)]
 maxvort_25_saddle = maxvort_25[np.argmin(np.abs(y_vort_25_saddle-NS25.y))]
@@ -277,21 +242,13 @@ y_pv_S20_saddle_avg = S20_42.y[np.argmin(maxprob_pv_S20[S20_42.z_enc_arg[0]:])+S
 maxpv_S20_saddle_avg = maxpv_S20[np.argmin(np.abs(y_pv_S20_saddle_avg-S20_42.y))]
 y_pv_S20_saddle_avg = y_pv_S20_saddle_avg/np.mean(S20_42.z_enc)
 
-# y_vort_S20_42_saddle_avg = S20_42.y[np.argmin(maxprob_vort_S20_42_avg)]
-# maxvort_S20_42_saddle_avg = maxvort_S20_42_avg[np.argmin(np.abs(y_vort_S20_42_saddle_avg-S20_42.y))]
-# y_vort_S20_42_saddle_avg = y_vort_S20_42_saddle_avg/np.mean(S20_42.z_enc)
+# y_vort_S20_42_saddle = S20_42.y[np.argmin(maxprob_vort_S20_42)]
+# maxvort_S20_42_saddle = maxvort_S20_42[np.argmin(np.abs(y_vort_S20_42_saddle-S20_42.y))]
+# y_vort_S20_42_saddle = y_vort_S20_42_saddle/S20_42.z_enc[it]
 
-# y_pv_S20_42_saddle_avg = S20_42.y[np.argmin(maxprob_pv_S20_42_avg[S20_42.z_enc_arg[0]:])+S20_42.z_enc_arg[0]]
-# maxpv_S20_42_saddle_avg = maxpv_S20_42_avg[np.argmin(np.abs(y_pv_S20_42_saddle_avg-S20_42.y))]
-# y_pv_S20_42_saddle_avg = y_pv_S20_42_saddle_avg/np.mean(S20_42.z_enc)
-
-y_vort_S20_42_saddle = S20_42.y[np.argmin(maxprob_vort_S20_42)]
-maxvort_S20_42_saddle = maxvort_S20_42[np.argmin(np.abs(y_vort_S20_42_saddle-S20_42.y))]
-y_vort_S20_42_saddle = y_vort_S20_42_saddle/S20_42.z_enc[it]
-
-y_pv_S20_42_saddle = S20_42.y[np.argmin(maxprob_pv_S20_42[S20_42.z_enc_arg[0]:])+S20_42.z_enc_arg[0]]
-maxpv_S20_42_saddle = maxpv_S20_42[np.argmin(np.abs(y_pv_S20_42_saddle-S20_42.y))]
-y_pv_S20_42_saddle = y_pv_S20_42_saddle/S20_42.z_enc[it]
+# y_pv_S20_42_saddle = S20_42.y[np.argmin(maxprob_pv_S20_42[S20_42.z_enc_arg[0]:])+S20_42.z_enc_arg[0]]
+# maxpv_S20_42_saddle = maxpv_S20_42[np.argmin(np.abs(y_pv_S20_42_saddle-S20_42.y))]
+# y_pv_S20_42_saddle = y_pv_S20_42_saddle/S20_42.z_enc[it]
 
 # Normalisation of y axis
 NS117_vortpdf.xy[1,:,:,:] = NS117_vortpdf.xy[1,:,:,:]/NS117.z_enc
@@ -302,9 +259,9 @@ NS42_vortpdf_y_mean = NS42_vortpdf_interp_data.xy[1,0,:,:]/np.mean(NS42.z_enc)
 NS42_pvpdf_y_mean = NS42_pvpdf_interp_data.xy[1,0,:,:]/np.mean(NS42.z_enc)
 NS42_s1gradpdf_y_mean = NS42_s1gradpdf.xy[1,0,:,:]/np.mean(NS42.z_enc)
 
-NS42_vortpdf.xy[1,:,:,:] = NS42_vortpdf.xy[1,:,:,:]/NS42.z_enc[it]
-NS42_pvpdf.xy[1,:,:,:] = NS42_pvpdf.xy[1,:,:,:]/NS42.z_enc[it]
-NS42_s1gradpdf.xy[1,:,:,:] = NS42_s1gradpdf.xy[1,:,:,:]/NS42.z_enc[it]
+# NS42_vortpdf.xy[1,:,:,:] = NS42_vortpdf.xy[1,:,:,:]/NS42.z_enc[it]
+# NS42_pvpdf.xy[1,:,:,:] = NS42_pvpdf.xy[1,:,:,:]/NS42.z_enc[it]
+# NS42_s1gradpdf.xy[1,:,:,:] = NS42_s1gradpdf.xy[1,:,:,:]/NS42.z_enc[it]
 
 NS25_vortpdf.xy[1,:,:,:] = NS25_vortpdf.xy[1,:,:,:]/NS25.z_enc
 NS25_pvpdf.xy[1,:,:,:] = NS25_pvpdf.xy[1,:,:,:]/NS25.z_enc
@@ -313,9 +270,9 @@ S20_42_vortpdf_y_mean = S20_vortpdf_interp_data.xy[1,0,:,:]/np.mean(S20_42.z_enc
 S20_42_pvpdf_y_mean = S20_pvpdf_interp_data.xy[1,0,:,:]/np.mean(S20_42.z_enc)
 S20_42_s1gradpdf_y_mean = S20_42_s1gradpdf.xy[1,0,:,:]/np.mean(S20_42.z_enc)
 
-S20_42_vortpdf.xy[1,:,:,:] = S20_42_vortpdf.xy[1,:,:,:]/S20_42.z_enc[it]
-S20_42_pvpdf.xy[1,:,:,:] = S20_42_pvpdf.xy[1,:,:,:]/S20_42.z_enc[it]
-S20_42_s1gradpdf.xy[1,:,:,:] = S20_42_s1gradpdf.xy[1,:,:,:]/S20_42.z_enc[it]
+# S20_42_vortpdf.xy[1,:,:,:] = S20_42_vortpdf.xy[1,:,:,:]/S20_42.z_enc[it]
+# S20_42_pvpdf.xy[1,:,:,:] = S20_42_pvpdf.xy[1,:,:,:]/S20_42.z_enc[it]
+# S20_42_s1gradpdf.xy[1,:,:,:] = S20_42_s1gradpdf.xy[1,:,:,:]/S20_42.z_enc[it]
 
 # Normalisation of x axis
 NS117_vortpdf.xy[0,:,:,:] = np.log10(np.exp(NS117_vortpdf.xy[0,:,:,:])/(ceps*B0/nu_117)) 
@@ -326,9 +283,9 @@ NS42_vortpdf_x_mean = np.log10(np.exp(NS42_vortpdf_interp_data.xy[0,0,:,:])/(cep
 NS42_pvpdf_x_mean = np.log10(np.exp(NS42_pvpdf_interp_data.xy[0,0,:,:])/(cb*ceps*(np.mean(NS42.z_enc)/L0)**(-4./3.)*(B0/nu_42)**3/42))
 NS42_s1gradpdf_x_mean = np.log10(np.exp(NS42_s1gradpdf.xy[0,0,:,:])/(cb*N**4*42*(np.mean(NS42.z_enc)/L0)**(-4./3.)))
 
-NS42_vortpdf.xy[0,:,:,:] = np.log10(np.exp(NS42_vortpdf.xy[0,:,:,:])/(ceps*B0/nu_42))
-NS42_pvpdf.xy[0,:,:,:] = np.log10(np.exp(NS42_pvpdf.xy[0,:,:,:])/(cb*ceps*(NS42.z_enc[it]/L0)**(-4./3.)*(B0/nu_42)**3/42))
-NS42_s1gradpdf.xy[0,:,:,:] = np.log10(np.exp(NS42_s1gradpdf.xy[0,:,:,:])/(cb*N**4*42*(NS42.z_enc[it]/L0)**(-4./3.)))
+# NS42_vortpdf.xy[0,:,:,:] = np.log10(np.exp(NS42_vortpdf.xy[0,:,:,:])/(ceps*B0/nu_42))
+# NS42_pvpdf.xy[0,:,:,:] = np.log10(np.exp(NS42_pvpdf.xy[0,:,:,:])/(cb*ceps*(NS42.z_enc[it]/L0)**(-4./3.)*(B0/nu_42)**3/42))
+# NS42_s1gradpdf.xy[0,:,:,:] = np.log10(np.exp(NS42_s1gradpdf.xy[0,:,:,:])/(cb*N**4*42*(NS42.z_enc[it]/L0)**(-4./3.)))
 
 NS25_vortpdf.xy[0,:,:,:] = np.log10(np.exp(NS25_vortpdf.xy[0,:,:,:])/(ceps*B0/nu_25))
 NS25_pvpdf.xy[0,:,:,:] = np.log10(np.exp(NS25_pvpdf.xy[0,:,:,:])/(cb*ceps*(NS25.z_enc/L0)**(-4./3.)*(B0/nu_25)**3/25))
@@ -337,9 +294,9 @@ S20_42_vortpdf_x_mean = np.log10(np.exp(S20_vortpdf_interp_data.xy[0,0,:,:])/(ce
 S20_42_pvpdf_x_mean = np.log10(np.exp(S20_pvpdf_interp_data.xy[0,0,:,:])/(cb*ceps*(np.mean(S20_42.z_enc)/L0)**(-4./3.)*(B0/nu_42)**3/42))
 S20_42_s1gradpdf_x_mean = np.log10(np.exp(S20_42_s1gradpdf.xy[0,0,:,:])/(cb*N**4*42*(np.mean(S20_42.z_enc)/L0)**(-4./3.)))
 
-S20_42_vortpdf.xy[0,:,:,:] = np.log10(np.exp(S20_42_vortpdf.xy[0,:,:,:])/(ceps*B0/nu_42))
-S20_42_pvpdf.xy[0,:,:,:] = np.log10(np.exp(S20_42_pvpdf.xy[0,:,:,:])/(cb*ceps*(S20_42.z_enc[it]/L0)**(-4./3.)*(B0/nu_42)**3/42))
-S20_42_s1gradpdf.xy[0,:,:,:] = np.log10(np.exp(S20_42_s1gradpdf.xy[0,:,:,:])/(cb*N**4*42*(S20_42.z_enc[it]/L0)**(-4./3.)))
+# S20_42_vortpdf.xy[0,:,:,:] = np.log10(np.exp(S20_42_vortpdf.xy[0,:,:,:])/(ceps*B0/nu_42))
+# S20_42_pvpdf.xy[0,:,:,:] = np.log10(np.exp(S20_42_pvpdf.xy[0,:,:,:])/(cb*ceps*(S20_42.z_enc[it]/L0)**(-4./3.)*(B0/nu_42)**3/42))
+# S20_42_s1gradpdf.xy[0,:,:,:] = np.log10(np.exp(S20_42_s1gradpdf.xy[0,:,:,:])/(cb*N**4*42*(S20_42.z_enc[it]/L0)**(-4./3.)))
 
 #####################################################################
 # Colourmaps
