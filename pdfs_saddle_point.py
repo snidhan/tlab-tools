@@ -50,7 +50,7 @@ NS42_1 = Statistics(path_1+'stats/pdftimes/avg20500-53000.nc')
 NS42_2 = Statistics(path_2+'stats/pdftimes/avg60000-74500.nc')
 NS42_3 = Statistics(path_3+'stats/pdftimes/avg83000-127500.nc')
 
-S20 = Statistics(path_S20+'stats/pdftimes/avg42000-130000.nc')
+S20 = Statistics(path_S20+'stats/pdftimes/avg42000-148000.nc')
 
 z_enc_NS42 = np.concatenate((NS42_1.z_enc,NS42_2.z_enc,NS42_3.z_enc))
 
@@ -67,9 +67,9 @@ pvlist_1 = [path_1+'stats/pdfs/pdf20500.LnPotentialEnstrophy',path_1+'stats/pdfs
 pvlist_2 = [path_2+'stats/pdfs/pdf60000.LnPotentialEnstrophy',path_2+'stats/pdfs/pdf67000.LnPotentialEnstrophy',path_2+'stats/pdfs/pdf74500.LnPotentialEnstrophy']
 pvlist_3 = [path_3+'stats/pdfs/pdf83000.LnPotentialEnstrophy',path_3+'stats/pdfs/pdf93000.LnPotentialEnstrophy',path_3+'stats/pdfs/pdf102500.LnPotentialEnstrophy',path_3+'stats/pdfs/pdf113000.LnPotentialEnstrophy',path_3+'stats/pdfs/pdf127500.LnPotentialEnstrophy']
 
-vortlist_S20 = [path_S20+'stats/pdfs/pdf42000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf45000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf51000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf58000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf66000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf75000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf84000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf94000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf105000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf117000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf130000.LnEnstrophyW_iW_i']
+vortlist_S20 = [path_S20+'stats/pdfs/pdf42000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf45000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf51000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf58000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf66000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf75000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf84000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf94000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf105000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf117000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf130000.LnEnstrophyW_iW_i',path_S20+'stats/pdfs/pdf148000.LnEnstrophyW_iW_i']
 
-pvlist_S20 = [path_S20+'stats/pdfs/pdf42000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf45000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf51000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf58000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf66000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf75000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf84000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf94000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf105000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf117000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf130000.LnPotentialEnstrophy']
+pvlist_S20 = [path_S20+'stats/pdfs/pdf42000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf45000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf51000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf58000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf66000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf75000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf84000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf94000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf105000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf117000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf130000.LnPotentialEnstrophy',path_S20+'stats/pdfs/pdf148000.LnPotentialEnstrophy']
 
 NS42_vortpdf_1 = Pdfs(vortlist_1,path_1+'y.dat')
 NS42_vortpdf_2 = Pdfs(vortlist_2,path_2+'y.dat')
@@ -250,7 +250,7 @@ y_maxit_pv_S20 = np.zeros(np.ma.size(S20_pvpdf_interp_runmean,0))
 maxpv_it_S20 = np.zeros(np.ma.size(S20_pvpdf_interp_runmean,0))
 for t in range(0,np.ma.size(S20_pvpdf_interp_runmean,0)):
     for j in range(0,S20.y_len):
-        if np.abs(maxpv_S20[t,j+1])-np.abs(maxpv_S20[t,j]) > 1:
+        if np.abs(maxpv_S20[t,j+1])-np.abs(maxpv_S20[t,j]) > 0.7:
             maxit_pv_S20[t] = j+1
             break
     y_maxit_pv_S20[t] = S20.y[int(maxit_pv_S20[t])]/S20.z_enc[t+1]

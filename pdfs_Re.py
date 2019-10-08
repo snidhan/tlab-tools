@@ -211,12 +211,12 @@ for i in range(NS42.z_enc_arg[0],NS42_3.y_len):
         break
   
 for i in range(S20_42.y_len):
-    if np.abs(maxvort_S20[i+1])-np.abs(maxvort_S20[i]) > 1:
+    if np.abs(maxvort_S20[i+1])-np.abs(maxvort_S20[i]) > 0.5:
         maxit_vort_S20 = i+1
         break
 
 for i in range(S20_42.y_len):
-    if np.abs(maxpv_S20[i+1])-np.abs(maxpv_S20[i]) > 1:
+    if np.abs(maxpv_S20[i+1])-np.abs(maxpv_S20[i]) > 0.7:
         maxit_pv_S20 = i+1
         break
     
