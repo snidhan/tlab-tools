@@ -397,7 +397,7 @@ f, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,sharex='col',sharey='all',figsize=(1
 ax1.tick_params(bottom=True,top=True,left=True,right=True)
 ax2.tick_params(bottom=True,top=True,left=True,right=True)
 ax3.tick_params(bottom=True,top=True,left=True,right=True)
-ax3.tick_params(bottom=True,top=True,left=True,right=True)
+ax4.tick_params(bottom=True,top=True,left=True,right=True)
 ax1.set_xlim(-4,2) 
 ax2.set_xlim(-7,2)
 ax1.set_ylim(0,1.6)
