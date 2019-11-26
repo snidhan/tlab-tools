@@ -11,6 +11,8 @@ rc('text', usetex=True)
 rc('text.latex', preamble=r"\usepackage{fourier}")
 rc('font', family='serif')
 rc('font', size=20)
+rc('axes', linewidth=1.5)
+rc('lines', linewidth=2)
 
 opath = '/scratch/local1/m300551/ForKatherine/plots/3D/Re042/'
 
@@ -301,10 +303,37 @@ blues = matplotlib.cm.get_cmap('Blues')
 oranges = matplotlib.cm.get_cmap('Oranges')
 greys = matplotlib.cm.get_cmap('Greys')
 
+def multicolor_ylabel(ax,list_of_strings,list_of_colors,axis='x',anchorpad=0,**kw):
+    """this function creates axes labels with multiple colors
+    ax specifies the axes object where the labels should be drawn
+    list_of_strings is a list of all of the text items
+    list_if_colors is a corresponding list of colors for the strings
+    axis='x', 'y', or 'both' and specifies which label(s) should be drawn"""
+    from matplotlib.offsetbox import AnchoredOffsetbox, TextArea, HPacker, VPacker
+
+    # x-axis label
+    if axis=='x' or axis=='both':
+        boxes = [TextArea(text, textprops=dict(color=color, ha='left',va='bottom',**kw)) 
+                    for text,color in zip(list_of_strings,list_of_colors) ]
+        xbox = HPacker(children=boxes,align="center",pad=0, sep=5)
+        anchored_xbox = AnchoredOffsetbox(loc=3, child=xbox, pad=anchorpad,frameon=False,bbox_to_anchor=(0.2, -0.09),
+                                          bbox_transform=ax.transAxes, borderpad=0.)
+        ax.add_artist(anchored_xbox)
+
+    # y-axis label
+    if axis=='y' or axis=='both':
+        boxes = [TextArea(text, textprops=dict(color=color, ha='left',va='bottom',rotation=90,**kw)) 
+                     for text,color in zip(list_of_strings[::-1],list_of_colors) ]
+        ybox = VPacker(children=boxes,align="center", pad=0, sep=5)
+        anchored_ybox = AnchoredOffsetbox(loc=3, child=ybox, pad=anchorpad, frameon=False, bbox_to_anchor=(-0.22, 0.05), 
+                                          bbox_transform=ax.transAxes, borderpad=0.)
+        ax.add_artist(anchored_ybox)
+
+
 f, (ax1,ax2) = plt.subplots(1,2,figsize=(10,5))
 ax1.grid(True)
 ax2.grid(True)
-ax1.set_ylim(1,1.5)
+ax1.set_ylim(1,1.55)
 ax1.set_xlim(15,30)
 ax2.set_ylim(-4,0)
 ax2.set_xlim(15,30)
@@ -319,18 +348,46 @@ ax2.plot(time[1:-1],maxvort_it_NS42,c=blues(0.5))
 ax2.plot(time[1:-1],maxpv_it_NS42,c=oranges(0.5))
 ax2.plot(S20.z_enc[1:-1]/L_0,maxvort_it_S20,c=blues(0.9))
 ax2.plot(S20.z_enc[1:-1]/L_0,maxpv_it_S20,c=oranges(0.9))
-ax2.text(22,-3.4,r'$\mathrm{log}_{10}(\omega^2/\omega_0^2)$',color=blues(0.7),fontsize=20)
-ax2.text(22,-3.9,r'$\mathrm{log}_{10}(\Pi^2/\Pi_0^2)$',color=oranges(0.7),fontsize=20)
 ax2.text(16,-3.4,r'$Fr_0=0$',color=greys(0.5),fontsize=20)
 ax2.text(16,-3.9,r'$Fr_0=20$',color=greys(0.9),fontsize=20)
 ax1.set_xlabel(r'$z_\mathrm{enc}/L_0$')
 ax2.set_xlabel(r'$z_\mathrm{enc}/L_0$')
 ax1.set_ylabel(r'$z_\mathrm{saddle}/z_\mathrm{enc}$')
+multicolor_ylabel(ax2,('$\mathrm{log}_{10}(\omega^2/\omega_0^2),$','$\mathrm{log}_{10}(\Pi^2/\Pi_0^2)$'),(oranges(0.7),blues(0.7)),axis='y',fontsize=20)
 ax1.set_title('(a)',fontsize=20,loc='left')
 ax2.set_title('(b)',fontsize=20,loc='left')
-ax1.legend(loc='best',fontsize=20,borderaxespad=0.1,handlelength=1.2,ncol=2,columnspacing=1.5)
+ax1.legend(loc='best',fontsize=20,borderaxespad=0.1,handlelength=1.2,ncol=2,columnspacing=1.2)
 plt.tight_layout()
 plt.savefig(opath+'pdfs_saddle_height_time_S20_S0_interpxy.pdf')
+plt.show()
+
+f, (ax1,ax2) = plt.subplots(1,2,figsize=(10,5))
+ax1.grid(True,linewidth=1.5)
+ax2.grid(True,linewidth=1.5)
+ax1.tick_params(bottom=False,left=False)
+ax2.tick_params(bottom=False,left=False)
+ax1.set_ylim(1,1.55)
+ax1.set_xlim(15,30)
+ax2.set_ylim(-2,0)
+ax2.set_xlim(15,30)
+ax1.plot(time[1:-1],y_maxit_vort_NS42,c=blues(0.5))
+ax1.plot(S20.z_enc[1:-1]/L_0,y_maxit_vort_S20,c=blues(0.9))
+ax1.plot(S20.z_enc[1:-1]/L_0,runningmean(S20.z_ig/S20.z_enc,1),c=greys(0.9),ls='--',label=r'$z_{i,g}/z_\mathrm{enc}$')
+ax1.plot(time[1:-1],runningmean(z_if,1),c=greys(.5),ls='--',label=r'$z_{i,f}/z_\mathrm{enc}$')
+ax2.plot(time[1:-1],maxvort_it_NS42,c=blues(0.5),label=r'$Fr_0=0$')
+ax2.plot(S20.z_enc[1:-1]/L_0,maxvort_it_S20,c=blues(0.9),label=r'$Fr_0=20$')
+# ax2.text(16,-1.7,r'$Fr_0=0$',color=blues(0.5),fontsize=20)
+# ax2.text(16,-1.9,r'$Fr_0=20$',color=blues(0.9),fontsize=20)
+ax1.set_xlabel(r'$z_\mathrm{enc}/L_0$')
+ax2.set_xlabel(r'$z_\mathrm{enc}/L_0$')
+ax1.set_ylabel(r'$z_\mathrm{saddle}/z_\mathrm{enc}$')
+ax2.set_ylabel(r'$\mathrm{log}_{10}(\omega^2/\omega_0^2)$')
+ax1.set_title('(a)',fontsize=20,loc='left')
+ax2.set_title('(b)',fontsize=20,loc='left')
+ax1.legend(loc='best',fontsize=20)
+ax2.legend(loc='best',fontsize=20)
+plt.tight_layout()
+plt.savefig(opath+'pdfs_saddle_vort_height_time_S20_S0_interpxy.pdf',bbox_inches='tight')
 plt.show()
 
 #Presentations
