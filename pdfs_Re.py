@@ -249,6 +249,6 @@ ax2.set_title(r'(b)$Fr_0=20$',fontsize=20,loc='left')
 cbar_ax = f.add_axes([0.3,0.1,0.5,0.03])
 cbar = f.colorbar(cs1,cax=cbar_ax,orientation='horizontal')
 plt.tight_layout(rect=[0,0.1,1,1],h_pad=2)
-plt.savefig(opath+'Fig2.pdf',bbox_inches='tight')
+plt.savefig(opath+'Fig1.pdf',bbox_inches='tight')
 plt.show()
 
